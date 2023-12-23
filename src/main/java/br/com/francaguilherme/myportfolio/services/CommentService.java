@@ -32,6 +32,15 @@ public class CommentService {
         return repository.save(comment);
     }
 
+    public Comment updateComment(Comment comment) {
+        Long id = comment.getId();
+        if (id != null && id > 0 && repository.existsById(id)) {
+            return repository.save(comment);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
     public void deleteComment(Long id) {
         if (id != null && id > 0 && repository.existsById(id)) {
             repository.deleteById(id);

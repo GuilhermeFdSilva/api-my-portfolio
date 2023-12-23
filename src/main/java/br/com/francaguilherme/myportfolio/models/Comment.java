@@ -12,6 +12,10 @@ public class Comment {
     private String nick;
     @Column(nullable = false)
     private String message;
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int up;
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int down;
     @ManyToOne
     private Project project;
 
@@ -37,6 +41,22 @@ public class Comment {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getUp() {
+        return up;
+    }
+
+    public void setUp(int up) {
+        this.up = up;
+    }
+
+    public int getDown() {
+        return down;
+    }
+
+    public void setDown(int down) {
+        this.down = down;
     }
 
     public Project getProject() {

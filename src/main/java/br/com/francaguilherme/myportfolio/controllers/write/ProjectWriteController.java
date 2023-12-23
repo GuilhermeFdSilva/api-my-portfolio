@@ -43,6 +43,30 @@ public class ProjectWriteController {
         }
     }
 
+    @PutMapping("/{Type}")
+    public ResponseEntity<Project> likeProject(
+            @PathVariable String type,
+            @RequestBody Project project) {
+        try {
+            validateType(type);
+
+            if ("like".equals(type)) {
+                project.setLikes(project.getLikes() + 1);
+            } else if ("dislike".equals(type)) {
+                project.setLikes(project.getLikes() - 1);
+            }
+
+            service.updateProject(project);
+            return new ResponseEntity<>(project, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
         try {
@@ -52,6 +76,12 @@ public class ProjectWriteController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private void validateType(String type) {
+        if (!"like".equals(type) && !"dislike".equals(type)) {
+            throw new IllegalArgumentException();
         }
     }
 }

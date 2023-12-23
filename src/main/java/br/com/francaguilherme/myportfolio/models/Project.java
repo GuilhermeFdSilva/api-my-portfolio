@@ -25,6 +25,8 @@ public class Project {
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private byte[] readme;
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int likes;
 
     public Long getId() {
         return id;
@@ -104,5 +106,13 @@ public class Project {
 
     public void setReadme(byte[] readme) {
         this.readme = readme;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }
