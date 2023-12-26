@@ -11,6 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controlador responsável por realizar operações de escrita de comentários.
+ * Fornece endpoints para:
+ *  - Salvar um comentário;
+ *  - Votar em um comentário (up ou down);
+ *  - Deletar um comentário.
+ */
 @RestController
 @RequestMapping("admin/comments")
 public class CommentWriteController {
@@ -19,6 +26,12 @@ public class CommentWriteController {
     @Autowired
     private AdminService adminService;
 
+    /**
+     * Salva um novo comentário.
+     *
+     * @param comment Comentario a ser salvo.
+     * @return O comentário salvo com seu ID.
+     */
     @PostMapping
     public ResponseEntity<?> saveComment(@RequestBody Comment comment) {
         try {
@@ -33,6 +46,17 @@ public class CommentWriteController {
         }
     }
 
+    /**
+     * Incrementa ou decrementa os votos de um comentário.
+     *
+     * @param voteType pathVariable que mostra as intenções da requisição, podendo receber:
+     *                      - up;
+     *                      - down;
+     *                      - remove-up;
+     *                      - remove-down.
+     * @param comment Comentário que recebera o voto
+     * @return O comentário atualizado.
+     */
     @PutMapping("/{voteType}")
     public ResponseEntity<?> voteComment(
             @PathVariable String voteType,
@@ -41,16 +65,16 @@ public class CommentWriteController {
             validateVoteType(voteType);
 
             if ("up".equals(voteType)) {
-                addUpVote(comment);
+                comment.incrementUpVote();
             } else if ("down".equals(voteType)) {
-                addDownVote(comment);
+                comment.incrementDownVote();
             } else if ("remove-up".equals(voteType)) {
-                removeUpVote(comment);
+                comment.decrementUpVote();
             } else if ("remove-down".equals(voteType)) {
-                removeDownVote(comment);
+                comment.decrementDownVote();
             }
 
-            service.updateComment(comment);
+            comment = service.updateComment(comment);
             return new ResponseEntity<>(comment, HttpStatus.OK);
 
         } catch (EntityNotFoundException e) {
@@ -62,6 +86,13 @@ public class CommentWriteController {
         }
     }
 
+    /**
+     * Deleta um comentário do sistema.
+     *
+     * @param id O ID do comentário a ser deletado.
+     * @param admin Administrador para verificação da senha.
+     * @return A resposta do servidor para a requisição.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(
             @PathVariable Long id,
@@ -80,32 +111,17 @@ public class CommentWriteController {
         }
     }
 
+    /**
+     * Verifica se o tipo de voto é válido.
+     *
+     * @param voteType Tipo de voto para ser verificado.
+     */
     private void validateVoteType(String voteType) {
         if (!"up".equals(voteType)
                 && !"down".equals(voteType)
                 && !"remove-up".equals(voteType)
                 && !"remove-down".equals(voteType)) {
             throw new IllegalArgumentException();
-        }
-    }
-
-    private void addUpVote(Comment comment) {
-        comment.setUp(comment.getUp() + 1);
-    }
-
-    private void addDownVote(Comment comment) {
-        comment.setDown(comment.getDown() + 1);
-    }
-
-    private void removeUpVote(Comment comment) {
-        if (comment.getUp() > 0) {
-            comment.setUp(comment.getUp() - 1);
-        }
-    }
-
-    private void removeDownVote(Comment comment) {
-        if (comment.getDown() > 0) {
-            comment.setDown(comment.getDown() + 1);
         }
     }
 }

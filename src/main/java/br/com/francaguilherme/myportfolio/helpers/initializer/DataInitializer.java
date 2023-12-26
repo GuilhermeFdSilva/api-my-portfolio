@@ -7,6 +7,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * Inicializador de dados para a aplicação.
+ * Realiza a inicialização de um usuário administrador se ele ainda não existir.
+ */
 @Component
 public class DataInitializer implements CommandLineRunner {
     @Autowired

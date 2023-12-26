@@ -11,12 +11,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Controlador responsável por realizar operações de leitura de linguagens.
+ * Fornece endpoints para listar todas as linguagens.
+ */
 @RestController
 @RequestMapping("/languages")
 public class LanguageReadController {
     @Autowired
     private LanguageService service;
 
+    /**
+     * Retorna a lista de todas as linguagens armazenadas no sistema.
+     *
+     * @return Lista de todos as linguagens.
+     */
     @GetMapping
     public ResponseEntity<List<Language>> listLanguages() {
         List<Language> languages = service.listLanguages();

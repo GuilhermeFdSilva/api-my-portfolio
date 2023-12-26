@@ -12,6 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controlador resposnsável por realizar operações de escrita de linguagens.
+ * Fornece endpoints para:
+ *  - Salvar uma linguagem;
+ *  - Atualizar uma linguagem;
+ *  - Deletar uma linguagem.
+ */
 @RestController
 @RequestMapping("/admin/languages")
 public class LanguageWriteController {
@@ -20,6 +27,12 @@ public class LanguageWriteController {
     @Autowired
     private AdminService adminService;
 
+    /**
+     * Salvar nova linguagem.
+     *
+     * @param wrapper Objeto {@link AdminWrapper} para receber a senha do administrador e a linguagem.
+     * @return A linguagem salva com seu ID.
+     */
     @PostMapping
     public ResponseEntity<?> saveLanguage(
             @RequestBody AdminWrapper<Language> wrapper) {
@@ -39,6 +52,12 @@ public class LanguageWriteController {
         }
     }
 
+    /**
+     * Atualiza uma linguagem
+     *
+     * @param wrapper Objeto {@link AdminWrapper} para receber a senha do administrador e a linguagem.
+     * @return A linguagem atualizada.
+     */
     @PutMapping
     public ResponseEntity<?> updateLanguage(
             @RequestBody AdminWrapper<Language> wrapper) {
@@ -58,6 +77,13 @@ public class LanguageWriteController {
         }
     }
 
+    /**
+     * Deleta uma linguagem do sistema.
+     *
+     * @param id O ID da linguagem a ser deletada.
+     * @param admin Objeto {@link Admin} para validar a senha.
+     * @return A resposta do servidor para a requisição.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteLanguage(
             @PathVariable Long id,

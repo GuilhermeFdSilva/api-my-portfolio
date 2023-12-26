@@ -12,6 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controlador responsável por realizar operações de escrita de projetos.
+ * Fornece endpoints para:
+ *  - Salvar um projeto;
+ *  - Atualizar um projeto;
+ *  - Dar like ou dislike em um projeto;
+ *  - Deletar um projeto.
+ */
 @RestController
 @RequestMapping("/admin/projects")
 public class ProjectWriteController {
@@ -20,6 +28,12 @@ public class ProjectWriteController {
     @Autowired
     private AdminService adminService;
 
+    /**
+     * Salva um novo projeto
+     *
+     * @param wrapper Objeto {@link AdminWrapper} para receber a senha do administrador e o projeto.
+     * @return O projeto salvo com seu ID.
+     */
     @PostMapping
     public ResponseEntity<?> saveProject(
             @RequestBody AdminWrapper<Project> wrapper) {
@@ -39,6 +53,12 @@ public class ProjectWriteController {
         }
     }
 
+    /**
+     * Atualiza uma linguagem
+     *
+     * @param wrapper Objeto {@link AdminWrapper} para receber a senha do administrador e o projeto.
+     * @return O projeto atualizado.
+     */
     @PutMapping
     public ResponseEntity<?> updateProject(
             @RequestBody AdminWrapper<Project> wrapper) {
@@ -56,6 +76,15 @@ public class ProjectWriteController {
         }
     }
 
+    /**
+     * Adiciona ou remove um like de um projeto.
+     *
+     * @param type pathVariable que mostra as intenções da requisição, podendo receber:
+     *                  - like;
+     *                  - dislike.
+     * @param project Projeto que recebera o like.
+     * @return O projeto atualizado.
+     */
     @PutMapping("/{Type}")
     public ResponseEntity<?> likeProject(
             @PathVariable String type,
@@ -64,9 +93,9 @@ public class ProjectWriteController {
             validateType(type);
 
             if ("like".equals(type)) {
-                project.setLikes(project.getLikes() + 1);
+                project.likeProject();
             } else if ("dislike".equals(type)) {
-                project.setLikes(project.getLikes() - 1);
+                project.dislikeProject();
             }
 
             service.updateProject(project);
@@ -80,6 +109,13 @@ public class ProjectWriteController {
         }
     }
 
+    /**
+     * Deleta uma linguagem do sistema.
+     *
+     * @param id OID do projeto a ser deletado
+     * @param admin Objeto {@link Admin} para validar a senha.
+     * @return A resposta do servidor para a requisição.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProject(
             @PathVariable Long id,
@@ -98,6 +134,11 @@ public class ProjectWriteController {
         }
     }
 
+    /**
+     * Verifica se o tipo de like é valido.
+     *
+     * @param type Tipo de voto para ser verificado.
+     */
     private void validateType(String type) {
         if (!"like".equals(type) && !"dislike".equals(type)) {
             throw new IllegalArgumentException();

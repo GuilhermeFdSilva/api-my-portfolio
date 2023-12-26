@@ -12,12 +12,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controlador responsável por realizar operações de escrita de administrador.
+ * Fornece endpoints para atualizar a senha do administrador.
+ */
 @RestController
 @RequestMapping("/admin")
 public class AdminWriteController {
     @Autowired
     private AdminService service;
 
+    /**
+     * Atualiza a senha do administrador no sistema.
+     *
+     * @param wrapper Objeto {@link AdminPasswordWrapper} para receber a senha antiga e nova.
+     * @return O objeto {@link Admin} atualizado com a nova senha.
+     */
     @PutMapping
     public ResponseEntity<?> setPassword(
             @RequestBody AdminPasswordWrapper wrapper) {
