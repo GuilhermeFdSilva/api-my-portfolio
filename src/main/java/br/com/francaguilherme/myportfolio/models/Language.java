@@ -50,8 +50,8 @@ public class Language {
         return type;
     }
 
-    public void setType(Type type) {
-        this.type = type.toString();
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getIcon() {
@@ -84,9 +84,5 @@ public class Language {
 
     public void setMain(boolean main) {
         this.main = main;
-    }
-
-    public enum Type {
-        PL, FE, DB
     }
 }

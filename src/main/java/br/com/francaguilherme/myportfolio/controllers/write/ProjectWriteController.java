@@ -1,6 +1,9 @@
 package br.com.francaguilherme.myportfolio.controllers.write;
 
+import br.com.francaguilherme.myportfolio.helpers.wrappers.AdminWrapper;
+import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.models.Project;
+import br.com.francaguilherme.myportfolio.services.AdminService;
 import br.com.francaguilherme.myportfolio.services.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,37 +17,47 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectWriteController {
     @Autowired
     private ProjectService service;
+    @Autowired
+    private AdminService adminService;
 
     @PostMapping
-    public ResponseEntity<Project> saveProject(@RequestBody Project project) {
+    public ResponseEntity<?> saveProject(
+            @RequestBody AdminWrapper<Project> wrapper) {
         try {
-            Project newProject = service.saveProject(project);
-            return new ResponseEntity<>(newProject, HttpStatus.CREATED);
+            if (adminService.validatePassword(wrapper.getAdmin().getPassword())) {
+                Project newProject = service.saveProject(wrapper.getType());
+                return new ResponseEntity<>(newProject, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>("Autorização negada pelo servidor", HttpStatus.UNAUTHORIZED);
+            }
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Informações dos objetos incorreta - " + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping
-    public ResponseEntity<Project> updateProject(@RequestBody Project project) {
+    public ResponseEntity<?> updateProject(
+            @RequestBody AdminWrapper<Project> wrapper) {
         try {
-            Project updatedProject = service.updateProject(project);
-            return new ResponseEntity<>(updatedProject, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (adminService.validatePassword(wrapper.getAdmin().getPassword())) {
+                Project updatedProject = service.updateProject(wrapper.getType());
+                return new ResponseEntity<>(updatedProject, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Autorização negada pelo servidor", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
+            return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/{Type}")
-    public ResponseEntity<Project> likeProject(
+    public ResponseEntity<?> likeProject(
             @PathVariable String type,
             @RequestBody Project project) {
         try {
@@ -59,23 +72,29 @@ public class ProjectWriteController {
             service.updateProject(project);
             return new ResponseEntity<>(project, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
+    public ResponseEntity<?> deleteProject(
+            @PathVariable Long id,
+            @RequestBody Admin admin) {
         try {
-            service.deleteProject(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            if (adminService.validatePassword(admin.getPassword())) {
+                service.deleteProject(id);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>("Autorização negada pelo servidor", HttpStatus.UNAUTHORIZED);
+            }
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

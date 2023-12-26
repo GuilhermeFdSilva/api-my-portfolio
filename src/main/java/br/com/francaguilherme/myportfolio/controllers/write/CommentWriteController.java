@@ -1,6 +1,8 @@
 package br.com.francaguilherme.myportfolio.controllers.write;
 
+import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.models.Comment;
+import br.com.francaguilherme.myportfolio.services.AdminService;
 import br.com.francaguilherme.myportfolio.services.CommentService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +16,25 @@ import org.springframework.web.bind.annotation.*;
 public class CommentWriteController {
     @Autowired
     private CommentService service;
+    @Autowired
+    private AdminService adminService;
 
     @PostMapping
-    public ResponseEntity<Comment> saveComment(@RequestBody Comment comment) {
+    public ResponseEntity<?> saveComment(@RequestBody Comment comment) {
         try {
             Comment newComment = service.saveComment(comment);
             return new ResponseEntity<>(newComment, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Informações dos objetos incorreta - " + e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/{voteType}")
-    public ResponseEntity<Comment> voteComment(
+    public ResponseEntity<?> voteComment(
             @PathVariable String voteType,
             @RequestBody Comment comment) {
         try {
@@ -50,23 +54,29 @@ public class CommentWriteController {
             return new ResponseEntity<>(comment, HttpStatus.OK);
 
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+    public ResponseEntity<?> deleteComment(
+            @PathVariable Long id,
+            @RequestBody Admin admin) {
         try {
-            service.deleteComment(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            if (adminService.validatePassword(admin.getPassword())) {
+                service.deleteComment(id);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>("Autorização negada pelo servidor", HttpStatus.UNAUTHORIZED);
+            }
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
