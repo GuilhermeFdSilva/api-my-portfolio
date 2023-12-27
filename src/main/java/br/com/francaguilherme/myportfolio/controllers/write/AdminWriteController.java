@@ -1,5 +1,6 @@
 package br.com.francaguilherme.myportfolio.controllers.write;
 
+import br.com.francaguilherme.myportfolio.helpers.exceptions.AdminNotFoundException;
 import br.com.francaguilherme.myportfolio.helpers.exceptions.InvalidPasswordException;
 import br.com.francaguilherme.myportfolio.helpers.wrappers.AdminPasswordWrapper;
 import br.com.francaguilherme.myportfolio.models.Admin;
@@ -38,7 +39,7 @@ public class AdminWriteController {
             return new ResponseEntity<>(upToDate, HttpStatus.OK);
         } catch (InvalidPasswordException e) {
             return new ResponseEntity<>("Autorização negada pelo servidor", HttpStatus.UNAUTHORIZED);
-        } catch (Exception e) {
+        } catch (AdminNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

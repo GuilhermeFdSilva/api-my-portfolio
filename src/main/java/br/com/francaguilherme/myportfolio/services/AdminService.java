@@ -1,5 +1,6 @@
 package br.com.francaguilherme.myportfolio.services;
 
+import br.com.francaguilherme.myportfolio.helpers.exceptions.AdminNotFoundException;
 import br.com.francaguilherme.myportfolio.helpers.exceptions.InvalidPasswordException;
 import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.repositories.AdminRepository;
@@ -21,14 +22,10 @@ public class AdminService {
      *
      * @param password Senha a ser validada.
      * @return {@code true} caso a senha seja válida, {@code false} caso contrario
-     * @throws Exception Se ocorrer um erro durante a validação da senha.
+     * @throws RuntimeException Se ocorrer um erro durante a validação da senha.
      */
-    public boolean validatePassword(String password) throws Exception {
-        Admin admin = repository.findById(1L).orElse(null);
-
-        if (admin == null) {
-            throw new Exception();
-        }
+    public boolean validatePassword(String password) throws RuntimeException {
+        Admin admin = repository.findById(1L).orElseThrow(AdminNotFoundException::new);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.matches(password, admin.getPassword());
@@ -40,23 +37,16 @@ public class AdminService {
      * @param oldPassword A senha antida do administrador.
      * @param newPassword A nova senha a ser definida.
      * @return O objeto {@link Admin} atualizado com a nova senha.
-     * @throws InvalidPasswordException Se a senha antiga não for válida.
+     * @throws RuntimeException Se a senha antiga não for válida.
      */
-    public Admin setPassword(String oldPassword, String newPassword) throws InvalidPasswordException {
-        try {
-            if (validatePassword(oldPassword)) {
-                Admin mainAdmin = repository.findById(1L).orElse(null);
+    public Admin setPassword(String oldPassword, String newPassword) throws RuntimeException {
+        if (validatePassword(oldPassword)) {
+            Admin mainAdmin = repository.findById(1L).orElseThrow(AdminNotFoundException::new);
 
-                if (mainAdmin == null) {
-                    throw new Exception();
-                }
-
-                mainAdmin.setPassword(new BCryptPasswordEncoder().encode(newPassword));
-                return repository.save(mainAdmin);
-            }
-        } catch (Exception e) {
+            mainAdmin.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+            return repository.save(mainAdmin);
+        } else {
             throw new InvalidPasswordException();
         }
-        return null;
     }
 }

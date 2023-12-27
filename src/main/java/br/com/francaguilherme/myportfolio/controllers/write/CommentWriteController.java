@@ -106,7 +106,7 @@ public class CommentWriteController {
             }
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
+        } catch (ArithmeticException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

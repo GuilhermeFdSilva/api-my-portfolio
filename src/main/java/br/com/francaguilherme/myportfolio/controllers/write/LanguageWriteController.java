@@ -1,5 +1,6 @@
 package br.com.francaguilherme.myportfolio.controllers.write;
 
+import br.com.francaguilherme.myportfolio.helpers.exceptions.AdminNotFoundException;
 import br.com.francaguilherme.myportfolio.helpers.wrappers.AdminWrapper;
 import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.models.Language;
@@ -47,7 +48,7 @@ public class LanguageWriteController {
             return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>("Informações dos objetos incorreta - " + e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e) {
+        } catch (AdminNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -72,7 +73,7 @@ public class LanguageWriteController {
             return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
+        } catch (AdminNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -97,7 +98,7 @@ public class LanguageWriteController {
             }
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
+        } catch (AdminNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -1,5 +1,6 @@
 package br.com.francaguilherme.myportfolio.controllers.write;
 
+import br.com.francaguilherme.myportfolio.helpers.exceptions.AdminNotFoundException;
 import br.com.francaguilherme.myportfolio.helpers.wrappers.AdminWrapper;
 import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.models.Project;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controlador responsável por realizar operações de escrita de projetos.
  * Fornece endpoints para:
- *  - Salvar um projeto;
- *  - Atualizar um projeto;
- *  - Dar like ou dislike em um projeto;
- *  - Deletar um projeto.
+ * - Salvar um projeto;
+ * - Atualizar um projeto;
+ * - Dar like ou dislike em um projeto;
+ * - Deletar um projeto.
  */
 @RestController
 @RequestMapping("/admin/projects")
@@ -48,7 +49,7 @@ public class ProjectWriteController {
             return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>("Informações dos objetos incorreta - " + e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e) {
+        } catch (AdminNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -71,7 +72,7 @@ public class ProjectWriteController {
             }
         } catch (IllegalArgumentException | EntityNotFoundException e) {
             return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
+        } catch (AdminNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -79,9 +80,9 @@ public class ProjectWriteController {
     /**
      * Adiciona ou remove um like de um projeto.
      *
-     * @param type pathVariable que mostra as intenções da requisição, podendo receber:
-     *                  - like;
-     *                  - dislike.
+     * @param type    pathVariable que mostra as intenções da requisição, podendo receber:
+     *                - like;
+     *                - dislike.
      * @param project Projeto que recebera o like.
      * @return O projeto atualizado.
      */
@@ -112,7 +113,7 @@ public class ProjectWriteController {
     /**
      * Deleta uma linguagem do sistema.
      *
-     * @param id OID do projeto a ser deletado
+     * @param id    OID do projeto a ser deletado
      * @param admin Objeto {@link Admin} para validar a senha.
      * @return A resposta do servidor para a requisição.
      */
@@ -129,7 +130,7 @@ public class ProjectWriteController {
             }
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
+        } catch (AdminNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
