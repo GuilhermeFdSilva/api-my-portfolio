@@ -10,4 +10,8 @@ class MyPortfolioApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void testMain() {
+        MyPortfolioApplication.main(new String[]{});
+    }
 }
