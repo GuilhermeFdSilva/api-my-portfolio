@@ -1,12 +1,12 @@
 package br.com.francaguilherme.myportfolio.controllers.write;
 
+import br.com.francaguilherme.myportfolio.helpers.exceptions.AdminNotFoundException;
 import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.models.Comment;
 import br.com.francaguilherme.myportfolio.services.AdminService;
 import br.com.francaguilherme.myportfolio.services.CommentService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controlador responsável por realizar operações de escrita de comentários.
  * Fornece endpoints para:
- *  - Salvar um comentário;
- *  - Votar em um comentário (up ou down);
- *  - Deletar um comentário.
+ * - Salvar um comentário;
+ * - Votar em um comentário (up ou down);
+ * - Deletar um comentário.
  */
 @RestController
 @RequestMapping("admin/comments")
@@ -39,9 +39,7 @@ public class CommentWriteController {
             return new ResponseEntity<>(newComment, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<>("Informações dos objetos incorreta - " + e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -50,11 +48,11 @@ public class CommentWriteController {
      * Incrementa ou decrementa os votos de um comentário.
      *
      * @param voteType pathVariable que mostra as intenções da requisição, podendo receber:
-     *                      - up;
-     *                      - down;
-     *                      - remove-up;
-     *                      - remove-down.
-     * @param comment Comentário que recebera o voto
+     *                 - up;
+     *                 - down;
+     *                 - remove-up;
+     *                 - remove-down.
+     * @param comment  Comentário que recebera o voto
      * @return O comentário atualizado.
      */
     @PutMapping("/{voteType}")
@@ -81,7 +79,7 @@ public class CommentWriteController {
             return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -89,7 +87,7 @@ public class CommentWriteController {
     /**
      * Deleta um comentário do sistema.
      *
-     * @param id O ID do comentário a ser deletado.
+     * @param id    O ID do comentário a ser deletado.
      * @param admin Administrador para verificação da senha.
      * @return A resposta do servidor para a requisição.
      */
@@ -104,9 +102,9 @@ public class CommentWriteController {
             } else {
                 return new ResponseEntity<>("Autorização negada pelo servidor", HttpStatus.UNAUTHORIZED);
             }
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (ArithmeticException e) {
+        } catch (AdminNotFoundException e) {
+            return new ResponseEntity<>("Admin não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

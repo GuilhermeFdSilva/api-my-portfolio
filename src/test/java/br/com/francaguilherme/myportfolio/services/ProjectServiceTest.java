@@ -35,6 +35,7 @@ public class ProjectServiceTest {
         List<Project> result = service.listProjects();
 
         assertEquals(projects, result);
+        verify(repository, times(1)).findAll();
     }
 
     @Test
@@ -46,6 +47,7 @@ public class ProjectServiceTest {
         Project result = service.saveProject(project);
 
         assertEquals(project, result);
+        verify(repository, times(1)).save(project);
     }
 
     @Test
@@ -59,6 +61,7 @@ public class ProjectServiceTest {
         Project result = service.updateProject(project);
 
         assertEquals(project, result);
+        verify(repository, times(1)).save(project);
     }
 
     @Test
@@ -68,6 +71,7 @@ public class ProjectServiceTest {
                 () -> assertThrows(EntityNotFoundException.class, () -> service.updateProject(createProjectWhitId(0L))),
                 () -> assertThrows(EntityNotFoundException.class, () -> service.updateProject(createProjectWhitId(1L)))
         );
+        verify(repository, never()).save(any());
     }
 
     @Test
@@ -76,24 +80,19 @@ public class ProjectServiceTest {
 
         service.deleteProject(1L);
 
-        verify(repository).deleteById(anyLong());
+        verify(repository, times(1)).deleteById(1L);
     }
 
     @Test
     void testDeleteProject_invalidProject() {
         when(repository.existsById(anyLong())).thenReturn(false);
 
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> service.deleteProject(1L));
-
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> service.deleteProject(0L));
-
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> service.deleteProject(null));
+        assertAll(
+                () -> assertThrows(EntityNotFoundException.class, () -> service.deleteProject(1L)),
+                () -> assertThrows(EntityNotFoundException.class, () -> service.deleteProject(0L)),
+                () -> assertThrows(EntityNotFoundException.class, () -> service.deleteProject(null))
+        );
+        verify(repository, never()).deleteById(anyLong());
     }
 
     private Project createProjectWhitId(Long id) {

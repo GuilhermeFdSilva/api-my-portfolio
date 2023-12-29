@@ -8,7 +8,6 @@ import br.com.francaguilherme.myportfolio.services.AdminService;
 import br.com.francaguilherme.myportfolio.services.LanguageService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controlador resposnsável por realizar operações de escrita de linguagens.
  * Fornece endpoints para:
- *  - Salvar uma linguagem;
- *  - Atualizar uma linguagem;
- *  - Deletar uma linguagem.
+ * - Salvar uma linguagem;
+ * - Atualizar uma linguagem;
+ * - Deletar uma linguagem.
  */
 @RestController
 @RequestMapping("/admin/languages")
@@ -46,8 +45,6 @@ public class LanguageWriteController {
             }
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<>("Informações dos objetos incorreta - " + e.getMessage(), HttpStatus.CONFLICT);
         } catch (AdminNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -63,7 +60,7 @@ public class LanguageWriteController {
     public ResponseEntity<?> updateLanguage(
             @RequestBody AdminWrapper<Language> wrapper) {
         try {
-            if (adminService.validatePassword(wrapper.getAdmin().getPassword())){
+            if (adminService.validatePassword(wrapper.getAdmin().getPassword())) {
                 Language updatedLanguage = service.updateLanguage(wrapper.getType());
                 return new ResponseEntity<>(updatedLanguage, HttpStatus.OK);
             } else {
@@ -81,7 +78,7 @@ public class LanguageWriteController {
     /**
      * Deleta uma linguagem do sistema.
      *
-     * @param id O ID da linguagem a ser deletada.
+     * @param id    O ID da linguagem a ser deletada.
      * @param admin Objeto {@link Admin} para validar a senha.
      * @return A resposta do servidor para a requisição.
      */
@@ -90,7 +87,7 @@ public class LanguageWriteController {
             @PathVariable Long id,
             @RequestBody Admin admin) {
         try {
-            if (adminService.validatePassword(admin.getPassword())){
+            if (adminService.validatePassword(admin.getPassword())) {
                 service.deleteLanguage(id);
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {

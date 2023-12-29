@@ -36,6 +36,7 @@ public class CommentServiceTest {
         List<Comment> result = service.listComments();
 
         assertEquals(comments, result);
+        verify(repository, times(1)).findAll();
     }
 
     @Test
@@ -57,6 +58,7 @@ public class CommentServiceTest {
 
         assertEquals(1, result.size());
         assertEquals(1L, result.get(0).getProject().getId());
+        verify(repository, times(1)).findAll();
     }
 
     @Test
@@ -68,6 +70,7 @@ public class CommentServiceTest {
         Comment result = service.saveComment(comment);
 
         assertEquals(comment, result);
+        verify(repository, times(1)).save(comment);
     }
 
     @Test
@@ -81,6 +84,7 @@ public class CommentServiceTest {
         Comment result = service.updateComment(comment);
 
         assertEquals(comment, result);
+        verify(repository, times(1)).save(comment);
     }
 
     @Test
@@ -90,6 +94,7 @@ public class CommentServiceTest {
                 () -> assertThrows(EntityNotFoundException.class, () -> service.updateComment(createCommentWhitId(0L))),
                 () -> assertThrows(EntityNotFoundException.class, () -> service.updateComment(createCommentWhitId(1L)))
         );
+        verify(repository, never()).save(any());
     }
 
     @Test
@@ -98,25 +103,18 @@ public class CommentServiceTest {
 
         service.deleteComment(1L);
 
-        verify(repository).deleteById(anyLong());
+        verify(repository, times(1)).deleteById(1L);
     }
 
     @Test
     void testDeleteComment_invalidComment() {
         when(repository.existsById(anyLong())).thenReturn(false);
 
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> service.deleteComment(1L));
-
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> service.deleteComment(0L));
-
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> service.deleteComment(null));
-
+        assertAll(
+                () -> assertThrows(EntityNotFoundException.class, () -> service.deleteComment(1L)),
+                () -> assertThrows(EntityNotFoundException.class, () -> service.deleteComment(0L)),
+                () -> assertThrows(EntityNotFoundException.class, () -> service.deleteComment(null))
+        );
         verify(repository, never()).deleteById(anyLong());
     }
 

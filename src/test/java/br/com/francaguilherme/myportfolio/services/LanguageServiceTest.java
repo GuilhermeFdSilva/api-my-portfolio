@@ -36,6 +36,7 @@ public class LanguageServiceTest {
         List<Language> result = service.listLanguages();
 
         assertEquals(languages, result);
+        verify(repository, times(1)).findAll();
     }
 
     @Test
@@ -47,6 +48,7 @@ public class LanguageServiceTest {
         Language result = service.saveLanguage(language);
 
         assertEquals(language, result);
+        verify(repository, times(1)).save(language);
     }
 
     @Test
@@ -60,6 +62,7 @@ public class LanguageServiceTest {
         Language result = service.updateLanguage(language);
 
         assertEquals(language, result);
+        verify(repository, times(1)).save(language);
     }
 
     @Test
@@ -69,6 +72,7 @@ public class LanguageServiceTest {
                 () -> assertThrows(EntityNotFoundException.class, () -> service.updateLanguage(createLanguageWhitId(0L))),
                 () -> assertThrows(EntityNotFoundException.class, () -> service.updateLanguage(createLanguageWhitId(1L)))
         );
+        verify(repository, never()).save(any());
     }
 
     @Test
@@ -77,24 +81,19 @@ public class LanguageServiceTest {
 
         service.deleteLanguage(1L);
 
-        verify(repository).deleteById(anyLong());
+        verify(repository, times(1)).deleteById(1L);
     }
 
     @Test
     void testDeleteLanguage_invalidLanguage() {
         when(repository.existsById(anyLong())).thenReturn(false);
 
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> service.deleteLanguage(1L));
-
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> service.deleteLanguage(0L));
-
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> service.deleteLanguage(null));
+        assertAll(
+                () -> assertThrows(EntityNotFoundException.class, () -> service.deleteLanguage(1L)),
+                () -> assertThrows(EntityNotFoundException.class, () -> service.deleteLanguage(0L)),
+                () -> assertThrows(EntityNotFoundException.class, () -> service.deleteLanguage(null))
+        );
+        verify(repository, never()).deleteById(anyLong());
     }
 
     private Language createLanguageWhitId(Long id) {

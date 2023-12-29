@@ -14,8 +14,8 @@ public class AdminPasswordWrapper {
      * Obtém a senha antiga
      * @return A senha antiga.
      */
-    public Admin getOldPassword() {
-        return oldPassword;
+    public String getOldPassword() {
+        return oldPassword.getPassword();
     }
 
     /**
@@ -30,8 +30,8 @@ public class AdminPasswordWrapper {
      * Obtém a senha nova.
      * @return A senha nova.
      */
-    public Admin getNewPassword() {
-        return newPassword;
+    public String getNewPassword() {
+        return newPassword.getPassword();
     }
 
     /**

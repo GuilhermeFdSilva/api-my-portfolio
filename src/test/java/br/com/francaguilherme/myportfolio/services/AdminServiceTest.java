@@ -14,8 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -48,12 +47,14 @@ public class AdminServiceTest {
         Admin admin = new Admin();
         admin.setPassword(new BCryptPasswordEncoder().encode("admin123"));
         when(repository.findById(1L)).thenReturn(Optional.of(admin));
-        when(repository.save(any())).thenReturn(admin);
+        when(repository.save(admin)).thenReturn(admin);
 
         Admin result = service.setPassword("admin123", "newPassword");
 
         assertNotNull(result);
         assertNotEquals("admin123", result.getPassword());
+        verify(repository, times(2)).findById(1L);
+        verify(repository, times(1)).save(admin);
     }
 
     @Test
@@ -65,5 +66,7 @@ public class AdminServiceTest {
         assertThrows(
                 InvalidPasswordException.class,
                 () -> service.setPassword("wrongPassword", "newPassword"));
+        verify(repository, times(1)).findById(1L);
+        verify(repository, never()).save(any());
     }
 }

@@ -69,7 +69,7 @@ public class Comment {
     }
 
     /**
-     * Defina a mensagem do comentário.
+     * Define a mensagem do comentário.
      * @param message A nova mensagem do comentário.
      */
     public void setMessage(String message) {

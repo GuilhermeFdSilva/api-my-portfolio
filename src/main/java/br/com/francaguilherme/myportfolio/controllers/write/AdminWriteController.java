@@ -34,11 +34,11 @@ public class AdminWriteController {
             @RequestBody AdminPasswordWrapper wrapper) {
         try {
             Admin upToDate = service.setPassword(
-                    wrapper.getOldPassword().getPassword(),
-                    wrapper.getNewPassword().getPassword());
+                    wrapper.getOldPassword(),
+                    wrapper.getNewPassword());
             return new ResponseEntity<>(upToDate, HttpStatus.OK);
         } catch (InvalidPasswordException e) {
-            return new ResponseEntity<>("Autorização negada pelo servidor", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("Autorização negada pelo servidor" + e.getMessage(), HttpStatus.UNAUTHORIZED);
         } catch (AdminNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -17,7 +17,7 @@ public class DataInitializer implements CommandLineRunner {
     private AdminRepository repository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if (!repository.existsById(1L)) {
             Admin admin = new Admin();
             admin.setPassword(new BCryptPasswordEncoder().encode("admin123"));
