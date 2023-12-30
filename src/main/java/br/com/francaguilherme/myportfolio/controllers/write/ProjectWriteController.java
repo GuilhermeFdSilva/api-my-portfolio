@@ -67,8 +67,10 @@ public class ProjectWriteController {
             } else {
                 return new ResponseEntity<>("Autorização negada pelo servidor", HttpStatus.UNAUTHORIZED);
             }
-        } catch (IllegalArgumentException | EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Formato da requisição incorreto - " + e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (AdminNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -102,9 +102,9 @@ public class CommentWriteController {
             } else {
                 return new ResponseEntity<>("Autorização negada pelo servidor", HttpStatus.UNAUTHORIZED);
             }
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("Objeto não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (AdminNotFoundException e) {
-            return new ResponseEntity<>("Admin não encontrado - " + e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

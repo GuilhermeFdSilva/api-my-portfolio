@@ -18,8 +18,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -118,7 +117,7 @@ public class CommentWriteControllerTest {
     }
 
     @Test
-    void testDeleteComment_validPassword() {
+    void testDeleteComment() {
         Admin admin = new Admin();
 
         when(adminService.validatePassword(any())).thenReturn(true);
@@ -126,7 +125,7 @@ public class CommentWriteControllerTest {
         ResponseEntity<?> response = controller.deleteComment(1L, admin);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        assertEquals(null, response.getBody());
+        assertNull(response.getBody());
         verify(commentService, times(1)).deleteComment(1L);
     }
 
@@ -144,6 +143,19 @@ public class CommentWriteControllerTest {
     }
 
     @Test
+    void testDeleteComment_EntityNotFound() {
+        Admin admin = new Admin();
+
+        when(adminService.validatePassword(any())).thenThrow(new EntityNotFoundException());
+
+        ResponseEntity<?> response = controller.deleteComment(1L, admin);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Objeto não encontrado - " + new EntityNotFoundException().getMessage(), response.getBody());
+        verify(commentService, never()).deleteComment(anyLong());
+    }
+
+    @Test
     void testDeleteComment_AdminNotFound() {
         Admin admin = new Admin();
 
@@ -151,21 +163,8 @@ public class CommentWriteControllerTest {
 
         ResponseEntity<?> response = controller.deleteComment(1L, admin);
 
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Admin não encontrado - " + new AdminNotFoundException().getMessage(), response.getBody());
-        verify(commentService, never()).deleteComment(anyLong());
-    }
-
-    @Test
-    void testDeleteComment_RuntimeException() {
-        Admin admin = new Admin();
-
-        when(adminService.validatePassword(any())).thenThrow(new RuntimeException());
-
-        ResponseEntity<?> response = controller.deleteComment(1L, admin);
-
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals(new RuntimeException().getMessage(), response.getBody());
+        assertEquals(new AdminNotFoundException().getMessage(), response.getBody());
         verify(commentService, never()).deleteComment(anyLong());
     }
 }
