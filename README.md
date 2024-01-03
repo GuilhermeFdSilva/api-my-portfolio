@@ -1,4 +1,4 @@
-# Api-my-portfolio 🤖
+# Api-my-portfolio 🍵
 
 API desenvolvida em Java e Spring, utilizada para comunicação da minha aplicação Front-End ([My portfolio](https://github.com/GuilhermeFdSilva/MyPortfolio)), com meu banco de dados instanciado no AWS.
 
