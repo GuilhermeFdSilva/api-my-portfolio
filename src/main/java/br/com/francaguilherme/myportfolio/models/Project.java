@@ -1,6 +1,9 @@
 package br.com.francaguilherme.myportfolio.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * <p>
@@ -36,6 +39,9 @@ import jakarta.persistence.*;
  * @see lombok
  * @see Language
  */
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity(name = "projects")
 public class Project {
     @Id
@@ -44,7 +50,6 @@ public class Project {
     private Long id;
     @Column(nullable = false)
     private String title;
-
     @Column(nullable = false)
     private String image;
     @Column(columnDefinition = "MEDIUMTEXT")

@@ -1,6 +1,9 @@
 package br.com.francaguilherme.myportfolio.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * <p>
@@ -33,6 +36,9 @@ import jakarta.persistence.*;
  * @see NoArgsConstructor
  * @see lombok
  */
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity(name = "languages")
 public class Language {
     @Id
