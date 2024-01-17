@@ -3,13 +3,34 @@ package br.com.francaguilherme.myportfolio.models;
 import jakarta.persistence.*;
 
 /**
- * Representa um comentário feito em um Projeto {@link Project}.
- * Esta classe armazena informações do comentário, incluindo:
- *  - Nome de quem comentou (nick);
- *  - Mensagem do comentário (message);
- *  - Votos positivos (up);
- *  - Votos negativos (down);
- *  - ID do projeto comentado (project).
+ * <p>
+ *     Classe que representa um comentário feito em um projeto ({@link Project}). Esta classe utiliza a anotação
+ *     {@link Entity} para ser mapeada para o banco de dados em uma tabela de mesmo nome (comments).
+ * </p>
+ *
+ * <p>
+ *     Ela também utiliza as anotações {@link Getter}, {@link Setter} e {@link NoArgsConstructor} do {@link lombok} para
+ *     gerar automaticamente os getters e setters de todos os atributos da classe e um construtor sem argumentos.
+ * </p>
+ *
+ * <p>
+ *     Os atributos de um comentário são:
+ *     <ul>
+ *         <li>{@link #id}: Identificador único do objeto;</li>
+ *         <li>{@link #nick}: Apelido de quem fez o comentário;</li>
+ *         <li>{@link #message}: Mensagem escrita no comentário;</li>
+ *         <li>{@link #up}: Votos positivos no comentário;</li>
+ *         <li>{@link #down}: Votos negativos no comentário;</li>
+ *         <li>{@link #project}: Projeto comentado ({@link Project}).</li>
+ *     </ul>
+ * </p>
+ *
+ * @see Entity
+ * @see Getter
+ * @see Setter
+ * @see NoArgsConstructor
+ * @see lombok
+ * @see Project
  */
 @Entity(name = "comments")
 public class Comment {
@@ -29,111 +50,14 @@ public class Comment {
     private Project project;
 
     /**
-     * Obtém o ID do comentário.
-     * @return O ID do comentário.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Define o ID do comentário.
-     * @param id O novo ID do comentário.
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Obtém o nome do usuário no comentário.
-     * @return O nome do usuário.
-     */
-    public String getNick() {
-        return nick;
-    }
-
-    /**
-     * Define o nome do usuário no comentário.
-     * @param nick Novo nome de usuário do comentário.
-     */
-    public void setNick(String nick) {
-        this.nick = nick;
-    }
-
-    /**
-     * Obtém a mensagem do comentário.
-     * @return A mensagem do comentário.
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * Define a mensagem do comentário.
-     * @param message A nova mensagem do comentário.
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
-     * Obtém a quantidade de votos positivos.
-     * @return A quantidade de votos positivos.
-     */
-    public int getUp() {
-        return up;
-    }
-
-    /**
-     * Define a quantidade de votos positivos.
-     * @param up A nova quantidade de votos positivos.
-     */
-    public void setUp(int up) {
-        this.up = up;
-    }
-
-    /**
-     * Obtém a quantidade de votos negativos.
-     * @return A quantidade de votos negativos.
-     */
-    public int getDown() {
-        return down;
-    }
-
-    /**
-     * Define a quantidade de votos negativos.
-     * @param down A nova quantidade de votos negativos.
-     */
-    public void setDown(int down) {
-        this.down = down;
-    }
-
-    /**
-     * Obtém o Projeto que foi comentado.
-     * @return O Projeto que foi comentado.
-     */
-    public Project getProject() {
-        return project;
-    }
-
-    /**
-     * Define o Projeto que foi comentado.
-     * @param project Projeto comentado.
-     */
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    /**
-     * Incrementa o número de votos positivos (up) para este comentário.
+     * Adiciona 1 ao número de votos positivos({@link #up}).
      */
     public void incrementUpVote() {
         up++;
     }
 
     /**
-     * Decrementa o número de votos positivos (up) para este comentário,
-     * caso o valor seja maior que 0.
+     * Remove 1 do número de votos positivos({@link #up}), caso esse número seja maior que 0
      */
     public void decrementUpVote() {
         if (up > 0){
@@ -142,15 +66,14 @@ public class Comment {
     }
 
     /**
-     * Incrementa o número de votos negativos (down) para este comentário.
+     * Adiciona 1 ao número de votos negativos({@link #down}).
      */
     public void incrementDownVote() {
         down++;
     }
 
     /**
-     * Decrementa o número de votos negativos (down) para este comentário,
-     * caso o valor seja maior que 0.
+     * Remove 1 do número de votos negativos({@link #down}), caso esse número seja maior que 0.
      */
     public void decrementDownVote() {
         if (down > 0) {

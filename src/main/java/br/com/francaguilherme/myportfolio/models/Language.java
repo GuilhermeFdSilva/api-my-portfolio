@@ -3,18 +3,35 @@ package br.com.francaguilherme.myportfolio.models;
 import jakarta.persistence.*;
 
 /**
- * Representa uma linguagem de programação.
- * Esta classe armazena informações da linguagem de programação, incluindo:
- *  - Nome da linguagem (name);
- *  - Descrição da linguagem (description)
- *  - Tipo de linguagem (type: PL, FE, DB);
- *      - PL: Programming language (refere-se a linguagens de programação);
- *      - FE: Front-End (refere-se a ferramentas de programação para Front-End);
- *      - DB: Database (refere-se a sistemas de Gerenciamento de Banco de Dados (SGBDs)).
- *  - Link para o ícone da linguagem (icon);
- *  - Link para o stick da linguagem (stick);
- *  - Link para a documentação da linguagem (link);
- *  - Se a linguagem de programação é uma das principais (main).
+ * <p>
+ *     Classe que representa uma linguagem de programação. Essa classe utiliza a anotação {@link Entity} para ser mapeada
+ *     para o banco de dados em uma tabela de mesmo nome (languages).
+ * </p>
+ *
+ * <p>
+ *     Ela também utiliza as anotações {@link Getter}, {@link Setter} e {@link NoArgsConstructor} do {@link lombok} para
+ *     gerar automaticamente os getters e setters de todos os atributos da classe e um construtor sem argumentos.
+ * </p>
+ *
+ * <p>
+ *     Os atributos de um linguagem são:
+ *     <ul>
+ *         <li>{@link #id}: Identificador único do objeto;</li>
+ *         <li>{@link #name}: Nome da linguagem;</li>
+ *         <li>{@link #description}: Descrição simples da linguagem;</li>
+ *         <li>{@link #type}: Tipo de linguagem (PL - Programming language, FE - Front-end, DB - Database);</li>
+ *         <li>{@link #icon}: Link para o ícone da linguagem;</li>
+ *         <li>{@link #stick}: Link para o stick da linguagem;</li>
+ *         <li>{@link #link}: Link para a documentação da linguagem;</li>
+ *         <li>{@link #main}: Valor booleano que representa se é uma das linguagens principais.</li>
+ *     </ul>
+ * </p>
+ *
+ * @see Entity
+ * @see Getter
+ * @see Setter
+ * @see NoArgsConstructor
+ * @see lombok
  */
 @Entity(name = "languages")
 public class Language {
@@ -37,64 +54,7 @@ public class Language {
     private boolean main;
 
     /**
-     * Obtém o ID da linguagem.
-     * @return O ID da linguagem.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Define o ID da linguagem.
-     * @param id O novo ID da linguagem.
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Obtém o nome da linguagem.
-     * @return O nome da linguagem.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Define o nome da linguagem.
-     * @param name O novo nome da linguagem.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Obtém a descrição da linguagem.
-     * @return A descrição da linguagem.
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Define a descrição da linguagem.
-     * @param description A nova descrição da linguagem.
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Obtém o tipo da linguagem.
-     * @return O tipo da linguagem.
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * Define o tipo da linguagem.
-     * @param type O novo tipo da linguagem.
+     * Enum para padronização de valores inseridos no campo {@link #type} da classe {@link Language}.
      */
     public void setType(String type) {
         this.type = type;
