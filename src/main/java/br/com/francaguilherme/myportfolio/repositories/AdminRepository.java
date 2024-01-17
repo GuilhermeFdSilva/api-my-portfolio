@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repositório para entidade {@link Admin}.
- * Este repositório fornece métodos para interagir com a entidade relacionada,
- * para a persistência dos dados.
+ * Repositório da entidade {@link Admin}. Este repositório fornece métodos para manipulação e persistência de dados na
+ * tabela {@link Admin}.
+ *
+ * @see Repository
+ * @see Admin
  */
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
