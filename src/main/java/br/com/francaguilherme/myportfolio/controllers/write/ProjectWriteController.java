@@ -85,7 +85,7 @@ public class ProjectWriteController {
      * @param project Projeto que recebera o like.
      * @return O projeto atualizado.
      */
-    @PutMapping("/{Type}")
+    @PutMapping("/{type}")
     public ResponseEntity<?> likeProject(
             @PathVariable String type,
             @RequestBody Project project) {
