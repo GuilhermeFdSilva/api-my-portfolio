@@ -10,13 +10,26 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Serviço para operações relacionadas a entidade {@link Comment}.
- * Este serviço fornece métodos para:
- *  - Listar os comentários;
- *  - Listar os comentários por projeto {@link Project};
- *  - Salvar um comentário;
- *  - Atualizar um comentário;
- *  - Deletar comentário.
+ * <p>
+ *     Serviço para manipulação e tratamento de dados da entidade {@link Comment}. Esta classe utiliza os métodos do
+ *     repositório {@link CommentRepository}, para ler, salvar, atualizar e deletar comentários.
+ * </p>
+ *
+ * <p>
+ *     Caso ocorra algum problema, essa classe pode lançar {@link EntityNotFoundException}.
+ * </p>
+ *
+ * <p>
+ *     {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
+ *     {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
+ *     {@link CommentRepository}.
+ * </p>
+ *
+ * @see Service
+ * @see CommentRepository
+ * @see Comment
+ * @see Autowired
+ * @see EntityNotFoundException
  */
 @Service
 public class CommentService {
@@ -33,7 +46,7 @@ public class CommentService {
     }
 
     /**
-     * Lista todos os comentários de um {@link Project}.
+     * Lista todos os comentários de um projeto({@link Project}).
      *
      * @param id ID do projeto buscado.
      * @return A lista dos comentários do projeto.
@@ -50,9 +63,9 @@ public class CommentService {
     }
 
     /**
-     * Salva um novo comentário.
+     * Salva um novo comentário no sistema.
      *
-     * @param comment Comentario a ser salvo.
+     * @param comment Comentário a ser salvo.
      * @return O comentário salvo com seu ID.
      */
     public Comment saveComment(Comment comment) {
@@ -64,6 +77,7 @@ public class CommentService {
      *
      * @param comment Comentário atualizado com ID.
      * @return O comentário atualizado.
+     * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
     public Comment updateComment(Comment comment) {
         Long id = comment.getId();
@@ -77,7 +91,8 @@ public class CommentService {
     /**
      * Deleta um comentário do sistema.
      *
-     * @param id O ID do comentario a ser deletado.
+     * @param id O ID do comentário a ser deletado.
+     * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
     public void deleteComment(Long id) {
         if (id != null && id > 0 && repository.existsById(id)) {

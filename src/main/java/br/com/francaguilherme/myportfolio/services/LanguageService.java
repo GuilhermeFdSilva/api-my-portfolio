@@ -9,12 +9,26 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Serviço para operações relacionadas a entidade {@link Language}
- * Este serviço fornece métodos para:
- *  - Listar as linguagens;
- *  - Salvar uma linguagem;
- *  - Atualizar uma linguagem;
- *  - Deletar uma linguagem.
+ * <p>
+ *     Serviço para manipulação e tratamento de dados da entidade {@link Language}. Esta classe utiliza os métodos do
+ *     repositótio {@link LanguageRepository}, para ler, salvar, atualizar e deletar linguagens.
+ * </p>
+ *
+ * <p>
+ *     Caso ocorra algum problema, essa classe pode lançar {@link EntityNotFoundException}.
+ * </p>
+ *
+ * <p>
+ *     {@link Service} é utilizado oara que o Spring identifique que essa classe é um serviço, enquanto a anotação
+ *     {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
+ *     {@link LanguageRepository}.
+ * </p>
+ *
+ * @see Service
+ * @see LanguageRepository
+ * @see Language
+ * @see Autowired
+ * @see EntityNotFoundException
  */
 @Service
 public class LanguageService {
@@ -41,10 +55,11 @@ public class LanguageService {
     }
 
     /**
-     * Atualiza uma linguagem
+     * Atualiza uma linguagem do sistema.
      *
      * @param language Linguagem atualizada com ID.
      * @return A linguagem atualizada.
+     * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
     public Language updateLanguage(Language language) {
         Long id = language.getId();
@@ -60,6 +75,7 @@ public class LanguageService {
      * Deleta uma linguagem do sistema
      *
      * @param id O ID da linguagem a ser deletada.
+     * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
     public void deleteLanguage(Long id) {
         if (id != null && id > 0 && repository.existsById(id)) {

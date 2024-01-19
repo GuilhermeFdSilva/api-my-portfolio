@@ -9,12 +9,26 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Serviço para operações relacionadas a entidade {@link Project}
- * Este serviço fornece métodos para:
- *  - Listar os projetos;
- *  - Salvar um projeto;
- *  - Atualizar um projeto;
- *  - Deletar um projeto.
+ * <p>
+ *     Serviço para manipulação e tratamento de dados da entidade {@link Project}. Esta classe utiliza os métodos do
+ *     repositório {@link ProjectRepository}, para ler, salvar, atualizar e deletar projetos.
+ * </p>
+ *
+ * <p>
+ *     Caso ocorra algum problema, essa classe pode lançar {@link EntityNotFoundException}.
+ * </p>
+ *
+ * <p>
+ *     {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
+ *     {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
+ *     {@link ProjectRepository}.
+ * </p>
+ *
+ * @see Service
+ * @see ProjectRepository
+ * @see Project
+ * @see Autowired
+ * @see EntityNotFoundException
  */
 @Service
 public class ProjectService {
@@ -31,7 +45,7 @@ public class ProjectService {
     }
 
     /**
-     * Salva um novo projeto.
+     * Salva um novo projeto no sistema.
      *
      * @param project Projeto a ser salvo.
      * @return O projeto salvo com seu ID.
@@ -45,6 +59,7 @@ public class ProjectService {
      *
      * @param project Projeto atualizado com ID.
      * @return O projeto atualizado.
+     * @throws EntityNotFoundException Caso o ID dornecido seja inválido.
      */
     public Project updateProject(Project project) {
         Long id = project.getId();
@@ -60,6 +75,7 @@ public class ProjectService {
      * Deleta um projeto do sistema.
      *
      * @param id O ID do projeto a ser deletado.
+     * @throws EntityNotFoundException Caso o ID fornecido seja inválido
      */
     public void deleteProject(Long id) {
         if (id != null && id > 0 && repository.existsById(id)) {
