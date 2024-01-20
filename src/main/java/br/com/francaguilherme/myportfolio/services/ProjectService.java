@@ -1,5 +1,6 @@
 package br.com.francaguilherme.myportfolio.services;
 
+import br.com.francaguilherme.myportfolio.helpers.exceptions.EmptyListException;
 import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.models.Project;
 import br.com.francaguilherme.myportfolio.repositories.ProjectRepository;
@@ -44,9 +45,16 @@ public class ProjectService {
      * Retorna uma lista de todos os projetos armazenados no sistema.
      *
      * @return Lista de todos os projetos.
+     * @throws EmptyListException Caso não haja nenhum projeto listado.
      */
-    public List<Project> listProjects() {
-        return repository.findAll();
+    public List<Project> listProjects() throws EmptyListException {
+        List<Project> projects = repository.findAll();
+
+        if (projects.isEmpty()) {
+            throw new EmptyListException();
+        }
+
+        return projects;
     }
 
     /**

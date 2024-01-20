@@ -1,5 +1,6 @@
 package br.com.francaguilherme.myportfolio.services;
 
+import br.com.francaguilherme.myportfolio.helpers.exceptions.EmptyListException;
 import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.models.Language;
 import br.com.francaguilherme.myportfolio.repositories.LanguageRepository;
@@ -44,9 +45,16 @@ public class LanguageService {
      * Retorna a lista de todas as linguagens armazenadas no sistema.
      *
      * @return Lista de todas as linguagens.
+     * @throws EmptyListException Caso não haja nenhuma linguagem listada.
      */
-    public List<Language> listLanguages() {
-        return repository.findAll();
+    public List<Language> listLanguages() throws EmptyListException {
+        List<Language> languages = repository.findAll();
+
+        if (languages.isEmpty()) {
+            throw new EmptyListException();
+        }
+
+        return languages;
     }
 
     /**
