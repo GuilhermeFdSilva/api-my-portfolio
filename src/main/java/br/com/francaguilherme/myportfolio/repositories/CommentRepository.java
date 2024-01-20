@@ -14,6 +14,7 @@ import java.util.List;
  *
  * @see Repository
  * @see Comment
+ * @see Project
  * @see Query
  */
 @Repository

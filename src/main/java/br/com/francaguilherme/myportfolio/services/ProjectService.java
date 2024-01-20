@@ -21,7 +21,7 @@ import java.util.List;
  * <p>
  *     {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
  *     {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
- *     {@link ProjectRepository}.
+ *     {@link ProjectRepository} e {@link AdminService} que é utilizado para autentificação.
  * </p>
  *
  * @see Service
@@ -45,9 +45,10 @@ public class ProjectService {
     }
 
     /**
-     * Salva um novo projeto no sistema.
+     * Salva um novo projeto no sistema. Antes disso, valida as credenciais fornecidas.
      *
      * @param project Projeto a ser salvo.
+     * @param admin Credenciais administrativas.
      * @return O projeto salvo com seu ID.
      */
     public Project saveProject(Project project) {
@@ -55,9 +56,10 @@ public class ProjectService {
     }
 
     /**
-     * Atualiza um projeto do sistema.
+     * Atualiza um projeto do sistema. Antes disso, valida as credenciais fornecidas.
      *
      * @param project Projeto atualizado com ID.
+     * @param admin Credenciais administrativas.
      * @return O projeto atualizado.
      * @throws EntityNotFoundException Caso o ID dornecido seja inválido.
      */
@@ -74,7 +76,8 @@ public class ProjectService {
     /**
      * Deleta um projeto do sistema.
      *
-     * @param id O ID do projeto a ser deletado.
+     * @param id O ID do projeto a ser deletado. Antes disso, valida as credenciais fornecidas.
+     * @param admin Credenciais administrativas.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido
      */
     public void deleteProject(Long id) throws EntityNotFoundException {

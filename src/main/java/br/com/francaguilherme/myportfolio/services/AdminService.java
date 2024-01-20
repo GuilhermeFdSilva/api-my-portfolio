@@ -9,8 +9,26 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Serviço para operações relacionadas a entidade {@link Admin}.
- * Este serviço fornece métodos para validar e atualizar a senha do administrador.
+ * <p>
+ * Serviço para manipulação e validação de dados da entidade {@link Admin}. Essa classe utiliza os métodos do
+ * repositório {@link AdminRepository}, para validar e atualizar a senha administrativa do sistema.
+ * </p>
+ *
+ * <p>
+ * Caso ocorra algum problema na validação de dados, essa classe pode lançar {@link InvalidLoginException}.
+ * </p>
+ *
+ * <p>
+ * {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
+ * {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
+ * {@link AdminRepository}.
+ * </p>
+ *
+ * @see Service
+ * @see AdminRepository
+ * @see Admin
+ * @see Autowired
+ * @see InvalidLoginException
  */
 @Service
 public class AdminService {
@@ -20,9 +38,8 @@ public class AdminService {
     /**
      * Valida a senha do administrador.
      *
-     * @param password Senha a ser validada.
-     * @return {@code true} caso a senha seja válida, {@code false} caso contrario
-     * @throws RuntimeException Se ocorrer um erro durante a validação da senha.
+     * @param admin Administrador que se deseja logar.
+     * @throws InvalidLoginException Se ocorrer um erro durante a validação da senha.
      */
     public boolean validatePassword(String password) throws RuntimeException {
         Admin admin = repository.findById(1L).orElseThrow(AdminNotFoundException::new);
@@ -34,10 +51,10 @@ public class AdminService {
     /**
      * Atualiza a senha do administrador.
      *
-     * @param oldPassword A senha antida do administrador.
-     * @param newPassword A nova senha a ser definida.
+     * @param oldAdmin Credenciais antigas para validação.
+     * @param newAdmin Novas credenciais.
      * @return O objeto {@link Admin} atualizado com a nova senha.
-     * @throws RuntimeException Se a senha antiga não for válida.
+     * @throws InvalidLoginException Se ocorrer um erro durante a validação da senha.
      */
     public Admin setPassword(String oldPassword, String newPassword) throws RuntimeException {
         if (validatePassword(oldPassword)) {

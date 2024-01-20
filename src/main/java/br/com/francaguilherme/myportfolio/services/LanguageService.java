@@ -19,9 +19,9 @@ import java.util.List;
  * </p>
  *
  * <p>
- *     {@link Service} é utilizado oara que o Spring identifique que essa classe é um serviço, enquanto a anotação
+ *     {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
  *     {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
- *     {@link LanguageRepository}.
+ *     {@link LanguageRepository} e {@link AdminService} que é utilizado para autentificação.
  * </p>
  *
  * @see Service
@@ -45,9 +45,10 @@ public class LanguageService {
     }
 
     /**
-     * Salva uma nova linguagem.
+     * Salva uma nova linguagem. Antes disso, valida as credenciais fornecidas.
      *
      * @param language Linguagem a ser salva.
+     * @param admin Credenciais administrativas.
      * @return A linguagem salva com seu ID.
      */
     public Language saveLanguage(Language language) {
@@ -55,9 +56,10 @@ public class LanguageService {
     }
 
     /**
-     * Atualiza uma linguagem do sistema.
+     * Atualiza uma linguagem do sistema. Antes disso, valida as credenciais fornecidas.
      *
      * @param language Linguagem atualizada com ID.
+     * @param admin Credenciais administrativas.
      * @return A linguagem atualizada.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
@@ -72,9 +74,10 @@ public class LanguageService {
     }
 
     /**
-     * Deleta uma linguagem do sistema
+     * Deleta uma linguagem do sistema. Antes disso, valida as credenciais fornecidas.
      *
      * @param id O ID da linguagem a ser deletada.
+     * @param admin Credenciais administrativas.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
     public void deleteLanguage(Long id) throws EntityNotFoundException {
