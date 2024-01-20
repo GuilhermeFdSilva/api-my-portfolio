@@ -12,18 +12,18 @@ import java.util.List;
 
 /**
  * <p>
- *     Serviço para manipulação e tratamento de dados da entidade {@link Comment}. Esta classe utiliza os métodos do
- *     repositório {@link CommentRepository}, para ler, salvar, atualizar e deletar comentários.
+ * Serviço para manipulação e tratamento de dados da entidade {@link Comment}. Esta classe utiliza os métodos do
+ * repositório {@link CommentRepository}, para ler, salvar, atualizar e deletar comentários.
  * </p>
  *
  * <p>
- *     Caso ocorra algum problema, essa classe pode lançar {@link EntityNotFoundException}.
+ * Caso ocorra algum problema, essa classe pode lançar {@link EntityNotFoundException}.
  * </p>
  *
  * <p>
- *     {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
- *     {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
- *     {@link CommentRepository}.
+ * {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
+ * {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
+ * {@link CommentRepository}.
  * </p>
  *
  * @see Service
@@ -41,9 +41,16 @@ public class CommentService {
      * Retorna a lista de todos os comentários armazenados no sistema.
      *
      * @return Lista de todos os comentários.
+     * @throws EmptyListException Caso não haja nenhum comentario listado.
      */
-    public List<Comment> listComments() {
-        return repository.findAll();
+    public List<Comment> listComments() throws EmptyListException {
+        List<Comment> comments = repository.findAll();
+
+        if (comments.isEmpty()) {
+            throw new EmptyListException();
+        }
+
+        return comments;
     }
 
     /**
@@ -51,9 +58,16 @@ public class CommentService {
      *
      * @param id ID do projeto buscado.
      * @return A lista dos comentários do projeto.
+     * @throws EmptyListException Caso não haja nenhum comentario listado.
      */
-    public List<Comment> listCommentsByProject(@NonNull Long id) {
-        return repository.findCommentByProjectId(id);
+    public List<Comment> listCommentsByProject(@NonNull Long id) throws EmptyListException {
+        List<Comment> comments = repository.findCommentByProjectId(id);
+
+        if (comments.isEmpty()) {
+            throw new EmptyListException();
+        }
+
+        return comments;
     }
 
     /**
@@ -71,10 +85,11 @@ public class CommentService {
      *
      * @param comment Comentário atualizado com ID.
      * @return O comentário atualizado.
-     * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
+     * @throws EntityNotFoundException Caso do comentário seja inválido.
      */
     public Comment updateComment(@NonNull Comment comment) throws EntityNotFoundException {
         Long id = comment.getId();
+
         if (id != null && id > 0 && repository.existsById(id)) {
             return repository.save(comment);
         } else {
