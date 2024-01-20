@@ -90,6 +90,31 @@ public class ProjectService {
     }
 
     /**
+     * Like ou dislike a um projeto de acordo com o tipo de voto(voteType).
+     *
+     * @param project Projeto alvo do voto.
+     * @param voteType Tipo de voto:
+     *                 <ul>
+     *                     <li>like</li>
+     *                     <li>dislike</li>
+     *                 </ul>
+     * @return O projeto com o número de likes atualizado.
+     * @throws EntityNotFoundException Caso o projeto seja inválido.
+     */
+    public Project voteProject(@NonNull Project project, @NonNull String voteType) throws EntityNotFoundException {
+        Project projectOnDB = repository.findById(project.getId()).orElseThrow(EntityNotFoundException::new);
+
+        // De acordo com o voteType dornecido, sera chamado o método adequado.
+        if ("like".equals(voteType)) {
+            projectOnDB.likeProject();
+        } else if ("dislike".equals(voteType)) {
+            projectOnDB.dislikeProject();
+        }
+
+        return repository.save(projectOnDB);
+    }
+
+    /**
      * Deleta um projeto do sistema.
      *
      * @param id O ID do projeto a ser deletado. Antes disso, valida as credenciais fornecidas.
