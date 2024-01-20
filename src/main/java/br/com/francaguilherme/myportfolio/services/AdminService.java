@@ -1,10 +1,10 @@
 package br.com.francaguilherme.myportfolio.services;
 
-import br.com.francaguilherme.myportfolio.helpers.exceptions.AdminNotFoundException;
-import br.com.francaguilherme.myportfolio.helpers.exceptions.InvalidPasswordException;
+import br.com.francaguilherme.myportfolio.helpers.exceptions.InvalidLoginException;
 import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.repositories.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +41,15 @@ public class AdminService {
      * @param admin Administrador que se deseja logar.
      * @throws InvalidLoginException Se ocorrer um erro durante a validação da senha.
      */
-    public boolean validatePassword(String password) throws RuntimeException {
-        Admin admin = repository.findById(1L).orElseThrow(AdminNotFoundException::new);
+    protected void validatePassword(@NonNull Admin admin) throws InvalidLoginException {
+        Admin adminFound = repository.findAdminByLogin(admin.getLogin()).orElseThrow(InvalidLoginException::new);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.matches(password, admin.getPassword());
+
+        if (encoder.matches(admin.getPassword(), adminFound.getPassword())) {
+            return;
+        }
+        throw new InvalidLoginException();
     }
 
     /**
@@ -56,14 +60,11 @@ public class AdminService {
      * @return O objeto {@link Admin} atualizado com a nova senha.
      * @throws InvalidLoginException Se ocorrer um erro durante a validação da senha.
      */
-    public Admin setPassword(String oldPassword, String newPassword) throws RuntimeException {
-        if (validatePassword(oldPassword)) {
-            Admin mainAdmin = repository.findById(1L).orElseThrow(AdminNotFoundException::new);
+    protected Admin setPassword(@NonNull Admin oldAdmin, @NonNull Admin newAdmin) throws InvalidLoginException {
+        validatePassword(oldAdmin);
+        Admin mainAdmin = repository.findAdminByLogin(oldAdmin.getLogin()).orElseThrow(InvalidLoginException::new);
 
-            mainAdmin.setPassword(new BCryptPasswordEncoder().encode(newPassword));
-            return repository.save(mainAdmin);
-        } else {
-            throw new InvalidPasswordException();
-        }
+        mainAdmin.setPassword(new BCryptPasswordEncoder().encode(newAdmin.getPassword()));
+        return repository.save(mainAdmin);
     }
 }
