@@ -99,6 +99,37 @@ public class CommentService {
     }
 
     /**
+     * Vota em um comentário de acordo com o tipo de voto(voteType).
+     *
+     * @param comment  Comentario alvo do voto.
+     * @param voteType Tipo de voto.
+     *                 <ul>
+     *                     <li>up</li>
+     *                     <li>down</li>
+     *                     <li>remove-up</li>
+     *                     <li>remove-down</li>
+     *                 </ul>
+     * @return O comentário com o numero de votos atualizado.
+     * @throws EntityNotFoundException Caso do comentário seja inválido.
+     */
+    public Comment voteComment(Comment comment, String voteType) throws EntityNotFoundException {
+        Comment commentOnDB = repository.findById(comment.getId()).orElseThrow(EntityNotFoundException::new);
+
+        // De acordo com o voteType fornecido, sera chamado o metodo adequado.
+        if ("up".equals(voteType)) {
+            commentOnDB.incrementUpVote();
+        } else if ("down".equals(voteType)) {
+            commentOnDB.incrementDownVote();
+        } else if ("remove-up".equals(voteType)) {
+            commentOnDB.decrementUpVote();
+        } else if ("remove-down".equals(voteType)) {
+            commentOnDB.decrementDownVote();
+        }
+
+        return repository.save(commentOnDB);
+    }
+
+    /**
      * Deleta um comentário do sistema.
      *
      * @param id O ID do comentário a ser deletado.
