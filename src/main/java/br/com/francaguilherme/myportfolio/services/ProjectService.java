@@ -1,9 +1,11 @@
 package br.com.francaguilherme.myportfolio.services;
 
+import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.models.Project;
 import br.com.francaguilherme.myportfolio.repositories.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +29,7 @@ import java.util.List;
  * @see Service
  * @see ProjectRepository
  * @see Project
+ * @see AdminService
  * @see Autowired
  * @see EntityNotFoundException
  */
@@ -34,6 +37,8 @@ import java.util.List;
 public class ProjectService {
     @Autowired
     private ProjectRepository repository;
+    @Autowired
+    private AdminService adminService;
 
     /**
      * Retorna uma lista de todos os projetos armazenados no sistema.
@@ -51,7 +56,9 @@ public class ProjectService {
      * @param admin Credenciais administrativas.
      * @return O projeto salvo com seu ID.
      */
-    public Project saveProject(Project project) {
+    public Project saveProject(@NonNull Project project, @NonNull Admin admin) {
+        adminService.validatePassword(admin);
+
         return repository.save(project);
     }
 
@@ -63,7 +70,8 @@ public class ProjectService {
      * @return O projeto atualizado.
      * @throws EntityNotFoundException Caso o ID dornecido seja inválido.
      */
-    public Project updateProject(Project project) throws EntityNotFoundException {
+    public Project updateProject(@NonNull Project project, @NonNull Admin admin) throws EntityNotFoundException {
+        adminService.validatePassword(admin);
         Long id = project.getId();
 
         if (id != null && id > 0 && repository.existsById(id)) {
@@ -80,8 +88,10 @@ public class ProjectService {
      * @param admin Credenciais administrativas.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido
      */
-    public void deleteProject(Long id) throws EntityNotFoundException {
-        if (id != null && id > 0 && repository.existsById(id)) {
+    public void deleteProject(@NonNull Long id, @NonNull Admin admin) throws EntityNotFoundException {
+        adminService.validatePassword(admin);
+
+        if (id > 0 && repository.existsById(id)) {
             repository.deleteById(id);
         } else {
             throw new EntityNotFoundException();

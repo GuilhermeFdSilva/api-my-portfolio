@@ -1,9 +1,11 @@
 package br.com.francaguilherme.myportfolio.services;
 
+import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.models.Language;
 import br.com.francaguilherme.myportfolio.repositories.LanguageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +29,7 @@ import java.util.List;
  * @see Service
  * @see LanguageRepository
  * @see Language
+ * @see AdminService
  * @see Autowired
  * @see EntityNotFoundException
  */
@@ -34,6 +37,8 @@ import java.util.List;
 public class LanguageService {
     @Autowired
     private LanguageRepository repository;
+    @Autowired
+    private AdminService adminService;
 
     /**
      * Retorna a lista de todas as linguagens armazenadas no sistema.
@@ -51,7 +56,9 @@ public class LanguageService {
      * @param admin Credenciais administrativas.
      * @return A linguagem salva com seu ID.
      */
-    public Language saveLanguage(Language language) {
+    public Language saveLanguage(@NonNull Language language, @NonNull Admin admin) {
+        adminService.validatePassword(admin);
+
         return repository.save(language);
     }
 
@@ -63,7 +70,8 @@ public class LanguageService {
      * @return A linguagem atualizada.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
-    public Language updateLanguage(Language language) throws EntityNotFoundException {
+    public Language updateLanguage(@NonNull Language language, @NonNull Admin admin) throws EntityNotFoundException {
+        adminService.validatePassword(admin);
         Long id = language.getId();
 
         if (id != null && id > 0 && repository.existsById(id)) {
@@ -80,8 +88,10 @@ public class LanguageService {
      * @param admin Credenciais administrativas.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
-    public void deleteLanguage(Long id) throws EntityNotFoundException {
-        if (id != null && id > 0 && repository.existsById(id)) {
+    public void deleteLanguage(@NonNull Long id, @NonNull Admin admin) throws EntityNotFoundException {
+        adminService.validatePassword(admin);
+
+        if (id > 0 && repository.existsById(id)) {
             repository.deleteById(id);
         } else {
             throw new EntityNotFoundException();
