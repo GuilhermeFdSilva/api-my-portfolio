@@ -52,14 +52,7 @@ public class CommentService {
      * @return A lista dos comentários do projeto.
      */
     public List<Comment> listCommentsByProject(Long id) {
-        List<Comment> comments = repository.findAll();
-
-        comments = comments
-                .stream()
-                .filter(comment -> comment.getProject().getId().equals(id))
-                .toList();
-
-        return comments;
+        return repository.findCommentByProjectId(id);
     }
 
     /**
