@@ -61,7 +61,7 @@ public class LanguageService {
      * @return A linguagem atualizada.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
-    public Language updateLanguage(Language language) {
+    public Language updateLanguage(Language language) throws EntityNotFoundException {
         Long id = language.getId();
 
         if (id != null && id > 0 && repository.existsById(id)) {
@@ -77,7 +77,7 @@ public class LanguageService {
      * @param id O ID da linguagem a ser deletada.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
-    public void deleteLanguage(Long id) {
+    public void deleteLanguage(Long id) throws EntityNotFoundException {
         if (id != null && id > 0 && repository.existsById(id)) {
             repository.deleteById(id);
         } else {

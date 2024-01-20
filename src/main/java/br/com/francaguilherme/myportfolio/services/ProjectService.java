@@ -61,7 +61,7 @@ public class ProjectService {
      * @return O projeto atualizado.
      * @throws EntityNotFoundException Caso o ID dornecido seja inválido.
      */
-    public Project updateProject(Project project) {
+    public Project updateProject(Project project) throws EntityNotFoundException {
         Long id = project.getId();
 
         if (id != null && id > 0 && repository.existsById(id)) {
@@ -77,7 +77,7 @@ public class ProjectService {
      * @param id O ID do projeto a ser deletado.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido
      */
-    public void deleteProject(Long id) {
+    public void deleteProject(Long id) throws EntityNotFoundException {
         if (id != null && id > 0 && repository.existsById(id)) {
             repository.deleteById(id);
         } else {

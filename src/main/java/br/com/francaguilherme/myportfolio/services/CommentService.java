@@ -79,7 +79,7 @@ public class CommentService {
      * @return O comentário atualizado.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
-    public Comment updateComment(Comment comment) {
+    public Comment updateComment(Comment comment) throws EntityNotFoundException {
         Long id = comment.getId();
         if (id != null && id > 0 && repository.existsById(id)) {
             return repository.save(comment);
@@ -94,7 +94,7 @@ public class CommentService {
      * @param id O ID do comentário a ser deletado.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
-    public void deleteComment(Long id) {
+    public void deleteComment(Long id) throws EntityNotFoundException {
         if (id != null && id > 0 && repository.existsById(id)) {
             repository.deleteById(id);
         } else {
