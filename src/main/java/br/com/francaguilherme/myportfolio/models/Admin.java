@@ -1,6 +1,8 @@
 package br.com.francaguilherme.myportfolio.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,8 +40,14 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
+    @NotNull(message = "O campo 'login' não pode ser nulo")
+    @NotBlank(message = "O campo 'login' não pode estar em branco")
     private String login;
+
     @Column(nullable = false)
+    @NotNull(message = "O campo 'password' não pode ser nulo")
+    @NotBlank(message = "O campo 'password' não pode estar em branco")
     private String password;
 }

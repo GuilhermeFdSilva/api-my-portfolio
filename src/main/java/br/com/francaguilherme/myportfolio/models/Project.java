@@ -1,6 +1,8 @@
 package br.com.francaguilherme.myportfolio.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,21 +50,40 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false, insertable = false)
     private Long id;
+
     @Column(nullable = false)
+    @NotNull(message = "O campo 'title' não pode ser nulo")
+    @NotBlank(message = "O campo 'title' não estar em branco")
     private String title;
+
     @Column(nullable = false)
+    @NotNull(message = "O campo 'image' não pode ser nulo")
+    @NotBlank(message = "O campo 'image' não estar em branco")
     private String image;
+
     @Column(columnDefinition = "MEDIUMTEXT")
+    @NotNull(message = "O campo 'description' não pode ser nulo")
+    @NotBlank(message = "O campo 'description' não estar em branco")
     private String description;
+
     @ManyToOne
+    @NotNull(message = "O campo 'main_language' não pode ser nulo")
     private Language main_language;
-    private String[] tools;
-    @Column(nullable = false)
-    private String link_gh;
-    private String link_pg;
+
     @Lob
     @Column(columnDefinition = "LONGTEXT")
+    @NotNull(message = "O campo 'readme' não pode ser nulo")
     private byte[] readme;
+
+    @Column(nullable = false)
+    @NotNull(message = "O campo 'link_gh' não pode ser nulo")
+    @NotBlank(message = "O campo 'link_gh' não estar em branco")
+    private String link_gh;
+
+    private String link_pg;
+
+    private String[] tools;
+
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private int likes;
 

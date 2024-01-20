@@ -1,6 +1,8 @@
 package br.com.francaguilherme.myportfolio.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,20 +47,35 @@ public class Language {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false, insertable = false)
     private Long id;
+
     @Column(nullable = false)
+    @NotNull(message = "O campo 'name' não pode ser nulo")
+    @NotBlank(message = "O campo 'name' não estar em branco")
     private String name;
-    @Column(columnDefinition = "MEDIUMTEXT")
-    private String description;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @NotNull(message = "O campo 'type' não pode ser nulo")
     private LanguageType type;
-    private String icon;
+
     @Column(nullable = false)
+    @NotNull(message = "O campo 'stick' não pode ser nulo")
+    @NotBlank(message = "O campo 'stick' não estar em branco")
     private String stick;
+
     @Column(nullable = false)
+    @NotNull(message = "O campo 'link' não pode ser nulo")
+    @NotBlank(message = "O campo 'link' não estar em branco")
     private String link;
+
     @Column(nullable = false)
+    @NotNull(message = "O campo 'main' não pode ser nulo")
     private boolean main;
+
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String description;
+
+    private String icon;
 
     /**
      * Enum para padronização de valores inseridos no campo {@link #type} da classe {@link Language}.
