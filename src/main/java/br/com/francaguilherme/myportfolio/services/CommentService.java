@@ -112,7 +112,7 @@ public class CommentService {
      * @return O comentário com o número de votos atualizado.
      * @throws EntityNotFoundException Caso do comentário seja inválido.
      */
-    public Comment voteComment(Comment comment, String voteType) throws EntityNotFoundException {
+    public Comment voteComment(@NonNull Comment comment, @NonNull String voteType) throws EntityNotFoundException {
         Comment commentOnDB = repository.findById(comment.getId()).orElseThrow(EntityNotFoundException::new);
 
         // De acordo com o voteType fornecido, sera chamado o metodo adequado.
