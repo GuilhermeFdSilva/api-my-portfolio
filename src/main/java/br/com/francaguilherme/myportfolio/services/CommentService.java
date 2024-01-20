@@ -5,6 +5,7 @@ import br.com.francaguilherme.myportfolio.models.Project;
 import br.com.francaguilherme.myportfolio.repositories.CommentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class CommentService {
      * @param id ID do projeto buscado.
      * @return A lista dos comentários do projeto.
      */
-    public List<Comment> listCommentsByProject(Long id) {
+    public List<Comment> listCommentsByProject(@NonNull Long id) {
         return repository.findCommentByProjectId(id);
     }
 
@@ -61,7 +62,7 @@ public class CommentService {
      * @param comment Comentário a ser salvo.
      * @return O comentário salvo com seu ID.
      */
-    public Comment saveComment(Comment comment) {
+    public Comment saveComment(@NonNull Comment comment) {
         return repository.save(comment);
     }
 
@@ -72,7 +73,7 @@ public class CommentService {
      * @return O comentário atualizado.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
-    public Comment updateComment(Comment comment) throws EntityNotFoundException {
+    public Comment updateComment(@NonNull Comment comment) throws EntityNotFoundException {
         Long id = comment.getId();
         if (id != null && id > 0 && repository.existsById(id)) {
             return repository.save(comment);
@@ -87,8 +88,8 @@ public class CommentService {
      * @param id O ID do comentário a ser deletado.
      * @throws EntityNotFoundException Caso o ID fornecido seja inválido.
      */
-    public void deleteComment(Long id) throws EntityNotFoundException {
-        if (id != null && id > 0 && repository.existsById(id)) {
+    public void deleteComment(@NonNull Long id) throws EntityNotFoundException {
+        if (id > 0 && repository.existsById(id)) {
             repository.deleteById(id);
         } else {
             throw new EntityNotFoundException();
