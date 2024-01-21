@@ -1,44 +1,39 @@
 package br.com.francaguilherme.myportfolio.helpers.wrappers;
 
 import br.com.francaguilherme.myportfolio.models.Admin;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
- * Wrapper para encapsular senhas administrativas.
- * Fornece tanto a senha antiga quanto a nova dirante a operação de alterar senha.
+ * <p>
+ *     Classe utilizada para receber dois objetos {@link Admin} das requisições.
+ * </p>
+ *
+ * <p>
+ *     Ela também utiliza as anotações {@link Getter}, {@link Setter} e {@link NoArgsConstructor} do {@link lombok} para
+ *     gerar automaticamente os getters e setters de todos os atributos da classe e um construtor sem argumentos.
+ * </p>
+ *
+ * <p>
+ *     {@link #oldAdmin} repersenta o administrador antigo, para validação. {@link #newAdmin} representa o administrador
+ *     com as novas credenciais.
+ * </p>
+ *
+ * @see Admin
+ * @see Getter
+ * @see Setter
+ * @see NoArgsConstructor
+ * @see lombok
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class AdminPasswordWrapper {
-    private Admin oldPassword;
-    private Admin newPassword;
+    @NotNull(message = "O campo 'oldAdmin' não pode ser nulo")
+    private Admin oldAdmin;
 
-    /**
-     * Obtém a senha antiga
-     * @return A senha antiga.
-     */
-    public String getOldPassword() {
-        return oldPassword.getPassword();
-    }
-
-    /**
-     * Define a senha antiga.
-     * @param oldPassword A senha antiga a ser definida.
-     */
-    public void setOldPassword(Admin oldPassword) {
-        this.oldPassword = oldPassword;
-    }
-
-    /**
-     * Obtém a senha nova.
-     * @return A senha nova.
-     */
-    public String getNewPassword() {
-        return newPassword.getPassword();
-    }
-
-    /**
-     * Define a nova senha.
-     * @param newPassword A nova senha a ser definida.
-     */
-    public void setNewPassword(Admin newPassword) {
-        this.newPassword = newPassword;
-    }
+    @NotNull(message = "O campo 'newAdmin' não pode ser nulo")
+    private Admin newAdmin;
 }
