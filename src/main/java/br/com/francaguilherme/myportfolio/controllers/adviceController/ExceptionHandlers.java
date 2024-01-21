@@ -1,6 +1,7 @@
 package br.com.francaguilherme.myportfolio.controllers.adviceController;
 
 import br.com.francaguilherme.myportfolio.helpers.exceptions.EmptyListException;
+import br.com.francaguilherme.myportfolio.helpers.exceptions.InvalidLoginException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,11 @@ public class ExceptionHandlers {
     @ExceptionHandler(EmptyListException.class)
     public ResponseEntity<String> handlerEmptyList(EmptyListException exception) {
         return new ResponseEntity<>("Lista de comentários vazia ou nula", HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler(InvalidLoginException.class)
+    public ResponseEntity<String> handlerInvalidLogin(InvalidLoginException exception) {
+        return new ResponseEntity<>("Credenciais não inválidas", HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
