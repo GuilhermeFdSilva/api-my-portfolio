@@ -53,18 +53,18 @@ public class AdminService {
     }
 
     /**
-     * Atualiza a senha do administrador.
+     * Atualiza as credenciais do administrador.
      *
      * @param oldAdmin Credenciais antigas para validação.
      * @param newAdmin Novas credenciais.
-     * @return O objeto {@link Admin} atualizado com a nova senha.
      * @throws InvalidLoginException Se ocorrer um erro durante a validação da senha.
      */
-    protected Admin setPassword(@NonNull Admin oldAdmin, @NonNull Admin newAdmin) throws InvalidLoginException {
+    public void setCredentials(@NonNull Admin oldAdmin, @NonNull Admin newAdmin) throws InvalidLoginException {
         validatePassword(oldAdmin);
         Admin mainAdmin = repository.findAdminByLogin(oldAdmin.getLogin()).orElseThrow(InvalidLoginException::new);
 
         mainAdmin.setPassword(new BCryptPasswordEncoder().encode(newAdmin.getPassword()));
-        return repository.save(mainAdmin);
+        mainAdmin.setLogin(newAdmin.getLogin());
+        repository.save(mainAdmin);
     }
 }
