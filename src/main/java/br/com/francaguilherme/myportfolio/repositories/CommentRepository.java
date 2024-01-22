@@ -22,9 +22,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     /**
      * Lista todos os comentários de um projeto({@link Project}).
      *
-     * @param id ID do projeto buscado.
+     * @param projectId ID do projeto buscado.
      * @return A lista dos comentários do projeto.
      */
-    @Query("SELECT c FROM Comment c WHERE c.project.id = :id")
-    List<Comment> findCommentByProjectId(Long id);
+    @Query("SELECT c FROM Comment c WHERE c.project.id = :projectId")
+    List<Comment> findByProjectId(Long projectId);
 }
