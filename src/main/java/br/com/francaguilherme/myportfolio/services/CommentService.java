@@ -62,7 +62,7 @@ public class CommentService {
      * @throws EmptyListException Caso não haja nenhum comentario listado.
      */
     public List<Comment> listCommentsByProject(@NonNull Long id) throws EmptyListException {
-        List<Comment> comments = repository.findCommentByProjectId(id);
+        List<Comment> comments = repository.findByProjectId(id);
 
         if (comments.isEmpty()) {
             throw new EmptyListException();
