@@ -20,6 +20,7 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         if (!repository.existsById(1L)) {
             Admin admin = new Admin();
+            admin.setLogin("admin");
             admin.setPassword(new BCryptPasswordEncoder().encode("admin123"));
             repository.save(admin);
         }
