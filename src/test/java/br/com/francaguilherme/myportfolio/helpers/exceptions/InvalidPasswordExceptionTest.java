@@ -11,6 +11,6 @@ public class InvalidPasswordExceptionTest {
     @Test
     void testExceptionMessage() {
         String message = "Senha incorreta - " + new RuntimeException().getMessage();
-        assertEquals(message, new InvalidPasswordException().getMessage());
+        assertEquals(message, new InvalidLoginException().getMessage());
     }
 }

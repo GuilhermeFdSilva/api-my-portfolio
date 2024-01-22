@@ -1,6 +1,6 @@
 package br.com.francaguilherme.myportfolio.services;
 
-import br.com.francaguilherme.myportfolio.helpers.exceptions.InvalidPasswordException;
+import br.com.francaguilherme.myportfolio.helpers.exceptions.InvalidLoginException;
 import br.com.francaguilherme.myportfolio.models.Admin;
 import br.com.francaguilherme.myportfolio.repositories.AdminRepository;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ public class AdminServiceTest {
         when(repository.findById(1L)).thenReturn(Optional.of(admin));
 
         assertThrows(
-                InvalidPasswordException.class,
+                InvalidLoginException.class,
                 () -> service.setPassword("wrongPassword", "newPassword"));
         verify(repository, times(1)).findById(1L);
         verify(repository, never()).save(any());
