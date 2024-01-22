@@ -41,7 +41,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "languages")
+@Entity
+@Table(name = "languages")
 public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
