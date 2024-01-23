@@ -1,8 +1,11 @@
 package br.com.francaguilherme.myportfolio.services;
 
 import br.com.francaguilherme.myportfolio.helpers.exceptions.EmptyListException;
+import br.com.francaguilherme.myportfolio.models.DTOs.ProjectDTO;
 import br.com.francaguilherme.myportfolio.models.entities.Admin;
+import br.com.francaguilherme.myportfolio.models.entities.Language;
 import br.com.francaguilherme.myportfolio.models.entities.Project;
+import br.com.francaguilherme.myportfolio.repositories.LanguageRepository;
 import br.com.francaguilherme.myportfolio.repositories.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,8 @@ public class ProjectService {
     @Autowired
     private ProjectRepository repository;
     @Autowired
+    private LanguageRepository languageRepository;
+    @Autowired
     private AdminService adminService;
 
     /**
@@ -47,8 +52,8 @@ public class ProjectService {
      * @return Lista de todos os projetos.
      * @throws EmptyListException Caso não haja nenhum projeto listado.
      */
-    public List<Project> listProjects() throws EmptyListException {
-        List<Project> projects = repository.findAll();
+    public List<ProjectDTO> listProjects() throws EmptyListException {
+        List<ProjectDTO> projects = ProjectDTO.listToDTO(repository.findAll());
 
         if (projects.isEmpty()) {
             throw new EmptyListException();
@@ -64,10 +69,14 @@ public class ProjectService {
      * @param admin Credenciais administrativas.
      * @return O projeto salvo com seu ID.
      */
-    public Project saveProject(@NonNull Project project, @NonNull Admin admin) {
+    public ProjectDTO saveProject(@NonNull ProjectDTO dto, @NonNull Admin admin) {
         adminService.validatePassword(admin);
 
-        return repository.save(project);
+        Language language = languageRepository.findById(dto.getMain_language_id()).orElseThrow(EntityNotFoundException::new);
+
+        Project project = new Project(dto, language);
+
+        return ProjectDTO.toDTO(repository.save(project));
     }
 
     /**
@@ -78,12 +87,16 @@ public class ProjectService {
      * @return O projeto atualizado.
      * @throws EntityNotFoundException Caso o ID dornecido seja inválido.
      */
-    public Project updateProject(@NonNull Project project, @NonNull Admin admin) throws EntityNotFoundException {
+    public ProjectDTO updateProject(@NonNull ProjectDTO dto, @NonNull Admin admin) throws EntityNotFoundException {
         adminService.validatePassword(admin);
-        Long id = project.getId();
+        Long id = dto.getId();
 
         if (id != null && id > 0 && repository.existsById(id)) {
-            return repository.save(project);
+            Language language = languageRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+            Project project = new Project(dto, language);
+
+            return ProjectDTO.toDTO(repository.save(project));
         } else {
             throw new EntityNotFoundException();
         }
@@ -101,8 +114,8 @@ public class ProjectService {
      * @return O projeto com o número de likes atualizado.
      * @throws EntityNotFoundException Caso o projeto seja inválido.
      */
-    public Project voteProject(@NonNull Project project, @NonNull String voteType) throws EntityNotFoundException {
-        Project projectOnDB = repository.findById(project.getId()).orElseThrow(EntityNotFoundException::new);
+    public ProjectDTO voteProject(@NonNull ProjectDTO dto, @NonNull String voteType) throws EntityNotFoundException {
+        Project projectOnDB = repository.findById(dto.getId()).orElseThrow(EntityNotFoundException::new);
 
         // De acordo com o voteType dornecido, sera chamado o método adequado.
         if ("like".equals(voteType)) {
@@ -111,7 +124,7 @@ public class ProjectService {
             projectOnDB.dislikeProject();
         }
 
-        return repository.save(projectOnDB);
+        return ProjectDTO.toDTO(repository.save(projectOnDB));
     }
 
     /**

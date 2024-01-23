@@ -1,8 +1,8 @@
 package br.com.francaguilherme.myportfolio.controllers.privateAccess;
 
 import br.com.francaguilherme.myportfolio.helpers.wrappers.AdminWrapper;
+import br.com.francaguilherme.myportfolio.models.DTOs.ProjectDTO;
 import br.com.francaguilherme.myportfolio.models.entities.Admin;
-import br.com.francaguilherme.myportfolio.models.entities.Project;
 import br.com.francaguilherme.myportfolio.services.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +17,14 @@ public class PrivateProjectController {
     private ProjectService service;
 
     @PostMapping
-    public ResponseEntity<Project> saveProject(@Valid @RequestBody AdminWrapper<Project> wrapper) {
-        Project project = service.saveProject(wrapper.getType(), wrapper.getAdmin());
+    public ResponseEntity<ProjectDTO> saveProject(@Valid @RequestBody AdminWrapper<ProjectDTO> wrapper) {
+        ProjectDTO project = service.saveProject(wrapper.getType(), wrapper.getAdmin());
         return new ResponseEntity<>(project, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Project> updateProject(@Valid @RequestBody AdminWrapper<Project> wrapper) {
-        Project project = service.updateProject(wrapper.getType(), wrapper.getAdmin());
+    public ResponseEntity<ProjectDTO> updateProject(@Valid @RequestBody AdminWrapper<ProjectDTO> wrapper) {
+        ProjectDTO project = service.updateProject(wrapper.getType(), wrapper.getAdmin());
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
