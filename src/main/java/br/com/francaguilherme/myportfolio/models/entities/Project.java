@@ -1,8 +1,7 @@
 package br.com.francaguilherme.myportfolio.models.entities;
 
+import br.com.francaguilherme.myportfolio.models.DTOs.ProjectDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -53,32 +52,22 @@ public class Project {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Não pode ser nulo")
-    @NotBlank(message = "Não pode estar em branco")
     private String title;
 
     @Column(nullable = false)
-    @NotNull(message = "Não pode ser nulo")
-    @NotBlank(message = "Não pode estar em branco")
     private String image;
 
     @Column(columnDefinition = "MEDIUMTEXT")
-    @NotNull(message = "Não pode ser nulo")
-    @NotBlank(message = "Não pode estar em branco")
     private String description;
 
     @ManyToOne
-    @NotNull(message = "Não pode ser nulo")
     private Language main_language;
 
     @Lob
     @Column(columnDefinition = "LONGTEXT")
-    @NotNull(message = "Não pode ser nulo")
     private byte[] readme;
 
     @Column(nullable = false)
-    @NotNull(message = "Não pode ser nulo")
-    @NotBlank(message = "Não pode estar em branco")
     private String link_gh;
 
     private String link_pg;
@@ -87,6 +76,19 @@ public class Project {
 
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private int likes;
+
+    public Project(ProjectDTO dto, Language main_language) {
+        this.id = dto.getId();
+        this.title = dto.getTitle();
+        this.image = dto.getImage();
+        this.description = dto.getDescription();
+        this.main_language = main_language;
+        this.readme = dto.getReadme();
+        this.link_gh = dto.getLink_gh();
+        this.link_pg = dto.getLink_pg();
+        this.tools = dto.getTools();
+        this.likes = dto.getLikes();
+    }
 
     /**
      * Adiciona 1 ao número de {@link #likes} do projeto.
