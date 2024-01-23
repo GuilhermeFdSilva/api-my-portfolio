@@ -1,4 +1,4 @@
-package br.com.francaguilherme.myportfolio.models;
+package br.com.francaguilherme.myportfolio.models.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -49,17 +49,17 @@ public class Comment {
     private Long id;
 
     @Column(length = 30, nullable = false)
-    @NotNull(message = "O campo 'nick' não pode ser nulo")
-    @NotBlank(message = "O campo 'nick' não pode estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String nick;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo 'message' não pode ser nulo")
-    @NotBlank(message = "O campo 'message' não estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String message;
 
     @ManyToOne
-    @NotNull(message = "O campo 'project' não pode ser nulo")
+    @NotNull(message = "Não pode ser nulo")
     private Project project;
 
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")

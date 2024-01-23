@@ -1,4 +1,4 @@
-package br.com.francaguilherme.myportfolio.models;
+package br.com.francaguilherme.myportfolio.models.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -50,27 +50,27 @@ public class Language {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo 'name' não pode ser nulo")
-    @NotBlank(message = "O campo 'name' não estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @NotNull(message = "O campo 'type' não pode ser nulo")
+    @NotNull(message = "Não pode ser nulo")
     private LanguageType type;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo 'stick' não pode ser nulo")
-    @NotBlank(message = "O campo 'stick' não estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String stick;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo 'link' não pode ser nulo")
-    @NotBlank(message = "O campo 'link' não estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String link;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo 'main' não pode ser nulo")
+    @NotNull(message = "Não pode ser nulo")
     private boolean main;
 
     @Column(columnDefinition = "MEDIUMTEXT")

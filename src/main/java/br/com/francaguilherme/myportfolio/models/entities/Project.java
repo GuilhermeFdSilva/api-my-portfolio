@@ -1,4 +1,4 @@
-package br.com.francaguilherme.myportfolio.models;
+package br.com.francaguilherme.myportfolio.models.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -53,32 +53,32 @@ public class Project {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo 'title' não pode ser nulo")
-    @NotBlank(message = "O campo 'title' não estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String title;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo 'image' não pode ser nulo")
-    @NotBlank(message = "O campo 'image' não estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String image;
 
     @Column(columnDefinition = "MEDIUMTEXT")
-    @NotNull(message = "O campo 'description' não pode ser nulo")
-    @NotBlank(message = "O campo 'description' não estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String description;
 
     @ManyToOne
-    @NotNull(message = "O campo 'main_language' não pode ser nulo")
+    @NotNull(message = "Não pode ser nulo")
     private Language main_language;
 
     @Lob
     @Column(columnDefinition = "LONGTEXT")
-    @NotNull(message = "O campo 'readme' não pode ser nulo")
+    @NotNull(message = "Não pode ser nulo")
     private byte[] readme;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo 'link_gh' não pode ser nulo")
-    @NotBlank(message = "O campo 'link_gh' não estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String link_gh;
 
     private String link_pg;

@@ -1,4 +1,4 @@
-package br.com.francaguilherme.myportfolio.models;
+package br.com.francaguilherme.myportfolio.models.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -42,12 +42,12 @@ public class Admin {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo 'login' não pode ser nulo")
-    @NotBlank(message = "O campo 'login' não pode estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String login;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo 'password' não pode ser nulo")
-    @NotBlank(message = "O campo 'password' não pode estar em branco")
+    @NotNull(message = "Não pode ser nulo")
+    @NotBlank(message = "Não pode estar em branco")
     private String password;
 }
