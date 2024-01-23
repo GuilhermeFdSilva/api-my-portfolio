@@ -3,15 +3,14 @@ package br.com.francaguilherme.myportfolio.controllers.adviceController;
 import br.com.francaguilherme.myportfolio.helpers.exceptions.EmptyListException;
 import br.com.francaguilherme.myportfolio.helpers.exceptions.InvalidLoginException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.List;
+import java.util.Set;
 
 @ControllerAdvice
 public class ExceptionHandlers {
@@ -28,20 +27,20 @@ public class ExceptionHandlers {
 
     @ExceptionHandler(InvalidLoginException.class)
     public ResponseEntity<String> handlerInvalidLogin(InvalidLoginException exception) {
-        return new ResponseEntity<>("Credenciais não inválidas", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Credenciais inválidas", HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handlerArgumentNotValid(MethodArgumentNotValidException exception) {
-        BindingResult result = exception.getBindingResult();
-        List<FieldError> fieldErrors = result.getFieldErrors();
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> handlerArgumentNotValid(ConstraintViolationException exception) {
+        Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
+        StringBuilder response = new StringBuilder();
 
-        StringBuilder errorMessage = new StringBuilder("Erros de validação: ");
+        violations.forEach((violation) -> {
+            String field = violation.getPropertyPath().toString();
+            String message = violation.getMessage();
+            response.append(field).append(": ").append(message).append("\n");
+        });
 
-        for (FieldError fieldError : fieldErrors) {
-            errorMessage.append(fieldError.getDefaultMessage()).append("; ");
-        }
-
-        return new ResponseEntity<>(errorMessage.toString(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
     }
 }
