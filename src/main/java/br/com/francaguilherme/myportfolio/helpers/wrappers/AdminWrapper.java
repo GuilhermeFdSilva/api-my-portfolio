@@ -1,6 +1,7 @@
 package br.com.francaguilherme.myportfolio.helpers.wrappers;
 
 import br.com.francaguilherme.myportfolio.models.entities.Admin;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,6 +42,7 @@ public class AdminWrapper<T> {
     @NotNull(message = "O campo 'admin' não pode ser nulo")
     private Admin admin;
 
+    @Valid
     @NotNull(message = "O campo 'type' não pode ser nulo")
     private T type;
 }
