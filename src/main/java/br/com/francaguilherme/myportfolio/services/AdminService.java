@@ -1,7 +1,7 @@
 package br.com.francaguilherme.myportfolio.services;
 
 import br.com.francaguilherme.myportfolio.helpers.exceptions.InvalidLoginException;
-import br.com.francaguilherme.myportfolio.models.Admin;
+import br.com.francaguilherme.myportfolio.models.entities.Admin;
 import br.com.francaguilherme.myportfolio.repositories.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;

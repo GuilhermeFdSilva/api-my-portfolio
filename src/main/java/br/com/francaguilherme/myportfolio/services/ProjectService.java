@@ -1,8 +1,8 @@
 package br.com.francaguilherme.myportfolio.services;
 
 import br.com.francaguilherme.myportfolio.helpers.exceptions.EmptyListException;
-import br.com.francaguilherme.myportfolio.models.Admin;
-import br.com.francaguilherme.myportfolio.models.Project;
+import br.com.francaguilherme.myportfolio.models.entities.Admin;
+import br.com.francaguilherme.myportfolio.models.entities.Project;
 import br.com.francaguilherme.myportfolio.repositories.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

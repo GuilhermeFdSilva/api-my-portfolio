@@ -1,6 +1,6 @@
 package br.com.francaguilherme.myportfolio.helpers.wrappers;
 
-import br.com.francaguilherme.myportfolio.models.Admin;
+import br.com.francaguilherme.myportfolio.models.entities.Admin;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

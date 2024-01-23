@@ -1,6 +1,6 @@
 package br.com.francaguilherme.myportfolio.controllers.publicAccess;
 
-import br.com.francaguilherme.myportfolio.models.Comment;
+import br.com.francaguilherme.myportfolio.models.entities.Comment;
 import br.com.francaguilherme.myportfolio.services.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

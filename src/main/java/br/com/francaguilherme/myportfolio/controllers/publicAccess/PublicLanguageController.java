@@ -1,6 +1,6 @@
 package br.com.francaguilherme.myportfolio.controllers.publicAccess;
 
-import br.com.francaguilherme.myportfolio.models.Language;
+import br.com.francaguilherme.myportfolio.models.entities.Language;
 import br.com.francaguilherme.myportfolio.services.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

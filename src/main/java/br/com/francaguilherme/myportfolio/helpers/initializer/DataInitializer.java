@@ -1,6 +1,6 @@
 package br.com.francaguilherme.myportfolio.helpers.initializer;
 
-import br.com.francaguilherme.myportfolio.models.Admin;
+import br.com.francaguilherme.myportfolio.models.entities.Admin;
 import br.com.francaguilherme.myportfolio.repositories.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
