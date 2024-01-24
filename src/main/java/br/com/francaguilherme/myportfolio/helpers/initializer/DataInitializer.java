@@ -8,8 +8,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
- * Inicializador de dados para a aplicação.
- * Realiza a inicialização de um usuário administrador se ele ainda não existir.
+ * <p>
+ *     Essa classe é responsável por inicializar dados necessários dentro do banco, caso não tenham sido inicializados.
+ * </p>
+ *
+ * <p>
+ *     Essa classe utiliza a anotação {@link Component} para indicar ao Spring que essa se trata de uma classe de
+ *     configuração
+ * </p>
+ *
+ * @see Component
+ * @see CommandLineRunner
  */
 @Component
 public class DataInitializer implements CommandLineRunner {
