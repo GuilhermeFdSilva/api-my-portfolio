@@ -77,6 +77,12 @@ public class Project {
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private int likes;
 
+    /**
+     * Construtor para inicialização de objeto a partir de um {@link ProjectDTO} e uma {@link Language}.
+     *
+     * @param dto {@link ProjectDTO} contendo os dados para inicialização do objeto.
+     * @param main_language {@link Language} linguagem principal relacionada ao projeto.
+     */
     public Project(ProjectDTO dto, Language main_language) {
         this.id = dto.getId();
         this.title = dto.getTitle();
