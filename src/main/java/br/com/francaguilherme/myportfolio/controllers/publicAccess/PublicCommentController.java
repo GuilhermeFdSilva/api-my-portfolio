@@ -1,6 +1,6 @@
 package br.com.francaguilherme.myportfolio.controllers.publicAccess;
 
-import br.com.francaguilherme.myportfolio.models.entities.Comment;
+import br.com.francaguilherme.myportfolio.models.DTOs.CommentDTO;
 import br.com.francaguilherme.myportfolio.services.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,32 +17,32 @@ public class PublicCommentController {
     private CommentService service;
 
     @GetMapping
-    public ResponseEntity<List<Comment>> listComments() {
-        List<Comment> comments = service.listComments();
+    public ResponseEntity<List<CommentDTO>> listComments() {
+        List<CommentDTO> comments = service.listComments();
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<List<Comment>> listCommentsByProject(@PathVariable Long projectId) {
-        List<Comment> comments = service.listCommentsByProject(projectId);
+    public ResponseEntity<List<CommentDTO>> listCommentsByProject(@PathVariable Long projectId) {
+        List<CommentDTO> comments = service.listCommentsByProject(projectId);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Comment> saveComment(@Valid @RequestBody Comment comment) {
-        Comment newComment = service.saveComment(comment);
+    public ResponseEntity<CommentDTO> saveComment(@Valid @RequestBody CommentDTO comment) {
+        CommentDTO newComment = service.saveComment(comment);
         return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Comment> updateComment(@Valid @RequestBody Comment comment) {
-        Comment commentUpToDate = service.updateComment(comment);
+    public ResponseEntity<CommentDTO> updateComment(@Valid @RequestBody CommentDTO comment) {
+        CommentDTO commentUpToDate = service.updateComment(comment);
         return new ResponseEntity<>(commentUpToDate, HttpStatus.OK);
     }
 
     @PutMapping("/{voteType}")
-    public ResponseEntity<Comment> voteComment(@PathVariable String voteType, @Valid @RequestBody Comment comment) {
-        Comment commentVoted = service.voteComment(comment, voteType);
+    public ResponseEntity<CommentDTO> voteComment(@PathVariable String voteType, @Valid @RequestBody CommentDTO comment) {
+        CommentDTO commentVoted = service.voteComment(comment, voteType);
         return new ResponseEntity<>(commentVoted, HttpStatus.OK);
     }
 
