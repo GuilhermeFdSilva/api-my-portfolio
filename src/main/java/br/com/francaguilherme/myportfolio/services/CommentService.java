@@ -1,9 +1,11 @@
 package br.com.francaguilherme.myportfolio.services;
 
 import br.com.francaguilherme.myportfolio.helpers.exceptions.EmptyListException;
+import br.com.francaguilherme.myportfolio.models.DTOs.CommentDTO;
 import br.com.francaguilherme.myportfolio.models.entities.Comment;
 import br.com.francaguilherme.myportfolio.models.entities.Project;
 import br.com.francaguilherme.myportfolio.repositories.CommentRepository;
+import br.com.francaguilherme.myportfolio.repositories.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -37,6 +39,8 @@ import java.util.List;
 public class CommentService {
     @Autowired
     private CommentRepository repository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     /**
      * Retorna a lista de todos os comentários armazenados no sistema.
@@ -44,8 +48,8 @@ public class CommentService {
      * @return Lista de todos os comentários.
      * @throws EmptyListException Caso não haja nenhum comentario listado.
      */
-    public List<Comment> listComments() throws EmptyListException {
-        List<Comment> comments = repository.findAll();
+    public List<CommentDTO> listComments() throws EmptyListException {
+        List<CommentDTO> comments = CommentDTO.listToDTO(repository.findAll());
 
         if (comments.isEmpty()) {
             throw new EmptyListException();
@@ -61,8 +65,8 @@ public class CommentService {
      * @return A lista dos comentários do projeto.
      * @throws EmptyListException Caso não haja nenhum comentario listado.
      */
-    public List<Comment> listCommentsByProject(@NonNull Long id) throws EmptyListException {
-        List<Comment> comments = repository.findByProjectId(id);
+    public List<CommentDTO> listCommentsByProject(@NonNull Long id) throws EmptyListException {
+        List<CommentDTO> comments = CommentDTO.listToDTO(repository.findByProjectId(id));
 
         if (comments.isEmpty()) {
             throw new EmptyListException();
@@ -77,8 +81,12 @@ public class CommentService {
      * @param comment Comentário a ser salvo.
      * @return O comentário salvo com seu ID.
      */
-    public Comment saveComment(@NonNull Comment comment) {
-        return repository.save(comment);
+    public CommentDTO saveComment(@NonNull CommentDTO dto) {
+        Project project = projectRepository.findById(dto.getProject_id()).orElseThrow(EntityNotFoundException::new);
+
+        Comment comment = new Comment(dto, project);
+
+        return CommentDTO.toDTO(repository.save(comment));
     }
 
     /**
@@ -88,11 +96,15 @@ public class CommentService {
      * @return O comentário atualizado.
      * @throws EntityNotFoundException Caso do comentário seja inválido.
      */
-    public Comment updateComment(@NonNull Comment comment) throws EntityNotFoundException {
-        Long id = comment.getId();
+    public CommentDTO updateComment(@NonNull CommentDTO dto) throws EntityNotFoundException {
+        Long id = dto.getId();
 
         if (id != null && id > 0 && repository.existsById(id)) {
-            return repository.save(comment);
+            Project project = projectRepository.findById(dto.getProject_id()).orElseThrow(EntityNotFoundException::new);
+
+            Comment comment = new Comment(dto, project);
+
+            return CommentDTO.toDTO(repository.save(comment));
         } else {
             throw new EntityNotFoundException();
         }
@@ -112,21 +124,18 @@ public class CommentService {
      * @return O comentário com o número de votos atualizado.
      * @throws EntityNotFoundException Caso do comentário seja inválido.
      */
-    public Comment voteComment(@NonNull Comment comment, @NonNull String voteType) throws EntityNotFoundException {
-        Comment commentOnDB = repository.findById(comment.getId()).orElseThrow(EntityNotFoundException::new);
+    public CommentDTO voteComment(@NonNull CommentDTO dto, @NonNull String voteType) throws EntityNotFoundException {
+        Comment commentOnDB = repository.findById(dto.getId()).orElseThrow(EntityNotFoundException::new);
 
         // De acordo com o voteType fornecido, sera chamado o metodo adequado.
-        if ("up".equals(voteType)) {
-            commentOnDB.incrementUpVote();
-        } else if ("down".equals(voteType)) {
-            commentOnDB.incrementDownVote();
-        } else if ("remove-up".equals(voteType)) {
-            commentOnDB.decrementUpVote();
-        } else if ("remove-down".equals(voteType)) {
-            commentOnDB.decrementDownVote();
+        switch (voteType) {
+            case "up" -> commentOnDB.incrementUpVote();
+            case "down" -> commentOnDB.incrementDownVote();
+            case "remove-up" -> commentOnDB.decrementUpVote();
+            case "remove-down" -> commentOnDB.decrementDownVote();
         }
 
-        return repository.save(commentOnDB);
+        return CommentDTO.toDTO(repository.save(commentOnDB));
     }
 
     /**
