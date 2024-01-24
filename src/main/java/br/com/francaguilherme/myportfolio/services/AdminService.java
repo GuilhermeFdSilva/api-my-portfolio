@@ -10,18 +10,18 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * Serviço para manipulação e validação de dados da entidade {@link Admin}. Essa classe utiliza os métodos do
- * repositório {@link AdminRepository}, para validar e atualizar a senha administrativa do sistema.
+ *     Serviço para manipulação e validação de dados da entidade {@link Admin}. Essa classe utiliza os métodos do
+ *     repositório {@link AdminRepository}, para validar e atualizar a senha administrativa do sistema.
  * </p>
  *
  * <p>
- * Caso ocorra algum problema na validação de dados, essa classe pode lançar {@link InvalidLoginException}.
+ *     Caso ocorra algum problema na validação de dados, essa classe pode lançar {@link InvalidLoginException}.
  * </p>
  *
  * <p>
- * {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
- * {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
- * {@link AdminRepository}.
+ *     {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
+ *     {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
+ *     {@link AdminRepository}.
  * </p>
  *
  * @see Service

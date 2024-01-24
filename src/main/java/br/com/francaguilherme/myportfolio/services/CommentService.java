@@ -15,23 +15,24 @@ import java.util.List;
 
 /**
  * <p>
- * Serviço para manipulação e tratamento de dados da entidade {@link Comment}. Esta classe utiliza os métodos do
- * repositório {@link CommentRepository}, para ler, salvar, atualizar e deletar comentários.
+ *     Serviço para manipulação e tratamento de dados da entidade {@link Comment} atraves da DTO {@link CommentDTO}. Esta
+ *     classe utiliza os métodos do repositório {@link CommentRepository}, para ler, salvar, atualizar e deletar comentários.
  * </p>
  *
  * <p>
- * Caso ocorra algum problema, essa classe pode lançar {@link EntityNotFoundException}.
+ *     Caso ocorra algum problema, essa classe pode lançar {@link EntityNotFoundException} ou {@link EmptyListException}.
  * </p>
  *
  * <p>
- * {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
- * {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
- * {@link CommentRepository}.
+ *     {@link Service} é utilizado para que o Spring identifique que essa classe é um serviço, enquanto a anotação
+ *     {@link Autowired} é utilizada para injeção de dependência do Spring, instanciando automaticamente
+ *     {@link CommentRepository}.
  * </p>
  *
  * @see Service
  * @see CommentRepository
  * @see Comment
+ * @see CommentDTO
  * @see Autowired
  * @see EntityNotFoundException
  */
@@ -78,7 +79,7 @@ public class CommentService {
     /**
      * Salva um novo comentário no sistema.
      *
-     * @param comment Comentário a ser salvo.
+     * @param dto {@link CommentDTO} representando o comentário a ser salvo.
      * @return O comentário salvo com seu ID.
      */
     public CommentDTO saveComment(@NonNull CommentDTO dto) {
@@ -92,7 +93,7 @@ public class CommentService {
     /**
      * Atualiza um comentário do sistema.
      *
-     * @param comment Comentário atualizado com ID.
+     * @param dto {@link CommentDTO} do comentário atualizado com ID.
      * @return O comentário atualizado.
      * @throws EntityNotFoundException Caso do comentário seja inválido.
      */
@@ -113,7 +114,7 @@ public class CommentService {
     /**
      * Vota em um comentário de acordo com o tipo de voto(voteType).
      *
-     * @param comment  Comentario alvo do voto.
+     * @param dto {@link CommentDTO} do comentário alvo.
      * @param voteType Tipo de voto:
      *                 <ul>
      *                     <li>up</li>

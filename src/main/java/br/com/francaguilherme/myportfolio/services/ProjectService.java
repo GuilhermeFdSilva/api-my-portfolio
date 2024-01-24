@@ -16,12 +16,12 @@ import java.util.List;
 
 /**
  * <p>
- *     Serviço para manipulação e tratamento de dados da entidade {@link Project}. Esta classe utiliza os métodos do
- *     repositório {@link ProjectRepository}, para ler, salvar, atualizar e deletar projetos.
+ *     Serviço para manipulação e tratamento de dados da entidade {@link Project} atraves da DTO {@link ProjectDTO}.
+ *     Esta classe utiliza os métodos do repositório {@link ProjectRepository}, para ler, salvar, atualizar e deletar projetos.
  * </p>
  *
  * <p>
- *     Caso ocorra algum problema, essa classe pode lançar {@link EntityNotFoundException}.
+ *     Caso ocorra algum problema, essa classe pode lançar {@link EntityNotFoundException} ou {@link EmptyListException}.
  * </p>
  *
  * <p>
@@ -33,6 +33,7 @@ import java.util.List;
  * @see Service
  * @see ProjectRepository
  * @see Project
+ * @see ProjectDTO
  * @see AdminService
  * @see Autowired
  * @see EntityNotFoundException
@@ -65,7 +66,7 @@ public class ProjectService {
     /**
      * Salva um novo projeto no sistema. Antes disso, valida as credenciais fornecidas.
      *
-     * @param project Projeto a ser salvo.
+     * @param dto {@link ProjectDTO} representando o projeto a ser salvo.
      * @param admin Credenciais administrativas.
      * @return O projeto salvo com seu ID.
      */
@@ -82,7 +83,7 @@ public class ProjectService {
     /**
      * Atualiza um projeto do sistema. Antes disso, valida as credenciais fornecidas.
      *
-     * @param project Projeto atualizado com ID.
+     * @param dto {@link ProjectDTO} o projeto atualizado com ID.
      * @param admin Credenciais administrativas.
      * @return O projeto atualizado.
      * @throws EntityNotFoundException Caso o ID dornecido seja inválido.
@@ -105,7 +106,7 @@ public class ProjectService {
     /**
      * Like ou dislike a um projeto de acordo com o tipo de voto(voteType).
      *
-     * @param project Projeto alvo do voto.
+     * @param dto {@link ProjectDTO} do projeto alvo.
      * @param voteType Tipo de voto:
      *                 <ul>
      *                     <li>like</li>
