@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.lang.NonNull;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,5 +38,13 @@ public class CommentDTO {
         this.project_id = comment.getProject().getId();
         this.up = comment.getUp();
         this.down = comment.getDown();
+    }
+
+    public static List<CommentDTO> listToDTO(List<Comment> comments) {
+        return comments.stream().map(CommentDTO::new).toList();
+    }
+
+    public static CommentDTO toDTO (Comment comment) {
+        return new CommentDTO(comment);
     }
 }
