@@ -62,6 +62,12 @@ public class Comment {
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private int down;
 
+    /**
+     * Construtor para inicialização do objeto a partir de um {@link CommentDTO} e um {@link Project}.
+     *
+     * @param dto {@link CommentDTO} contendo os dados para inicialização do objeto.
+     * @param project {@link Project} projeto relacionado ao projeto.
+     */
     public Comment(CommentDTO dto, Project project) {
         this.id = dto.getId();
         this.nick = dto.getNick();
