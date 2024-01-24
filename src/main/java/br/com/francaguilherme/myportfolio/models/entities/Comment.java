@@ -1,8 +1,7 @@
 package br.com.francaguilherme.myportfolio.models.entities;
 
+import br.com.francaguilherme.myportfolio.models.DTOs.CommentDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -49,17 +48,12 @@ public class Comment {
     private Long id;
 
     @Column(length = 30, nullable = false)
-    @NotNull(message = "Não pode ser nulo")
-    @NotBlank(message = "Não pode estar em branco")
     private String nick;
 
     @Column(nullable = false)
-    @NotNull(message = "Não pode ser nulo")
-    @NotBlank(message = "Não pode estar em branco")
     private String message;
 
     @ManyToOne
-    @NotNull(message = "Não pode ser nulo")
     private Project project;
 
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
@@ -67,6 +61,15 @@ public class Comment {
 
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private int down;
+
+    public Comment(CommentDTO dto, Project project) {
+        this.id = dto.getId();
+        this.nick = dto.getNick();
+        this.message = dto.getMessage();
+        this.project = project;
+        this.up = dto.getUp();
+        this.down = dto.getDown();
+    }
 
     /**
      * Adiciona 1 ao número de votos positivos({@link #up}).
