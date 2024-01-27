@@ -1,5 +1,6 @@
-package br.com.francaguilherme.myportfolio.models;
+package br.com.francaguilherme.myportfolio.models.entities;
 
+import br.com.francaguilherme.myportfolio.models.entities.Admin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,16 +15,26 @@ public class AdminTest {
     void setUp() {
         admin = new Admin();
         admin.setId(1L);
+        admin.setLogin("admin");
         admin.setPassword("admin123");
     }
 
     @Test
-    void testSetAndGetId () {
+    void testSetAndGetId() {
         assertEquals(1L, admin.getId());
 
         admin.setId(2L);
 
         assertEquals(2L, admin.getId());
+    }
+
+    @Test
+    void testSetAndGetLogin() {
+        assertEquals("admin", admin.getLogin());
+
+        admin.setLogin("admin2");
+
+        assertEquals("admin2", admin.getLogin());
     }
 
     @Test

@@ -1,7 +1,7 @@
 package br.com.francaguilherme.myportfolio.helpers.wrappers;
 
-import br.com.francaguilherme.myportfolio.models.Admin;
-import br.com.francaguilherme.myportfolio.models.Comment;
+import br.com.francaguilherme.myportfolio.models.entities.Admin;
+import br.com.francaguilherme.myportfolio.models.entities.Comment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
