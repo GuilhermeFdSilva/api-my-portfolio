@@ -11,12 +11,39 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * <p>
+ *     Classe com endpoints públicos para leitura da lista de {@link Language} salva no sistema. Essa classe retorna a
+ *     {@link ResponseEntity} com a lista de linguagens e o {@link HttpStatus} adequado.
+ * </p>
+ *
+ * <p>
+ *     Essa classe utiliza as anotações {@link RestController} para mostrar ao Spring que essa classe se trata de um
+ *     Controller, e {@link RequestMapping} para definir o path padrão da classe como /public/languages.
+ * </p>
+ *
+ * <p>
+ *     Esta classe contém somente um método:
+ *     <ul>
+ *         <li>{@link #listLanguages()}: Lista todas as linguagens do sistema.</li>
+ *     </ul>
+ * </p>
+ *
+ * @see RestController
+ * @see RequestMapping
+ * @see GetMapping
+ */
 @RestController
 @RequestMapping("/public/languages")
 public class PublicLanguageController {
     @Autowired
     private LanguageService service;
 
+    /**
+     * Lista todas as linguagens do sistema.
+     *
+     * @return {@link ResponseEntity} com {@link HttpStatus#OK} e a lista de linguagens.
+     */
     @GetMapping
     public ResponseEntity<List<Language>> listLanguages() {
         List<Language> languages = service.listLanguages();
