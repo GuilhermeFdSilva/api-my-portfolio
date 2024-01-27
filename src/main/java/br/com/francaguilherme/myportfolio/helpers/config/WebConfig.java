@@ -25,10 +25,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
+        registry.addMapping("/public/**")
                 .allowedOrigins("https://francaguilherme.com.br")
                 .allowedMethods("GET", "POST", "PUT")
                 .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowCredentials(false);
+
+        registry.addMapping("/admin/**")
+                .allowedOrigins("invalid")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(false);
     }
 }
