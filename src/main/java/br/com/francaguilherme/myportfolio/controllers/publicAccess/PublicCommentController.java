@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * <p>
- *     Classe com endpoints públicos para manipulação da DTO {@link CommentDTO}. Essa classe classe retorna a
+ *     Classe com endpoints públicos para manipulação da DTO {@link CommentDTO}. Essa classe retorna a
  *     {@link ResponseEntity} com ou sem objetos {@link CommentDTO} e o {@link HttpStatus} adequado para a resposta da
  *     requisição.
  * </p>
