@@ -93,7 +93,8 @@ public class ProjectService {
         Long id = dto.getId();
 
         if (id != null && id > 0 && repository.existsById(id)) {
-            Language language = languageRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+            Language language = languageRepository.findById(dto.getMain_language_id())
+                    .orElseThrow(EntityNotFoundException::new);
 
             Project project = new Project(dto, language);
 
