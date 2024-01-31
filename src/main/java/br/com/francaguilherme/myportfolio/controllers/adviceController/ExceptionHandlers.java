@@ -19,7 +19,7 @@ import java.util.Set;
 /**
  * <p>
  *     Classe para controle de exceções ocorridas durante as requisições. Essa classe retorna a {@link ResponseEntity}
- *     com o {@link HttpStatus} adequado de acordo com exceção lançada.
+ *     com o {@link HttpStatus} adequado de acordo com a exceção lançada.
  * </p>
  *
  * <p>
