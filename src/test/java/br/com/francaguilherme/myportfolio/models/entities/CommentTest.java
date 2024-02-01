@@ -15,49 +15,42 @@ public class CommentTest {
     @BeforeEach
     void setUp() {
         comment = new Comment();
-        comment.setId(1L);
-        comment.setNick("People");
-        comment.setMessage("Nice message");
-        comment.setProject(PROJECT);
-        comment.setUp(0);
-        comment.setDown(0);
     }
 
     @Test
     void testGetAndSetId() {
+        assertNull(comment.getId());
+
+        comment.setId(1L);
+
         assertEquals(1L, comment.getId());
-
-        comment.setId(2L);
-
-        assertEquals(2L, comment.getId());
     }
 
     @Test
     void testGetAndSetNick() {
-        assertEquals("People", comment.getNick());
+        assertNull(comment.getNick());
 
-        comment.setNick("People2");
+        comment.setNick("nick");
 
-        assertEquals("People2", comment.getNick());
+        assertEquals("nick", comment.getNick());
     }
 
     @Test
     void testGetAndSetMessage() {
-        assertEquals("Nice message", comment.getMessage());
+        assertNull(comment.getMessage());
 
-        comment.setMessage("Very nice message");
+        comment.setMessage("message");
 
-        assertEquals("Very nice message", comment.getMessage());
+        assertEquals("message", comment.getMessage());
     }
 
     @Test
     void testGetAndSetProject() {
+        assertNull(comment.getProject());
+
+        comment.setProject(PROJECT);
+
         assertEquals(PROJECT, comment.getProject());
-
-        Project project2 = new Project();
-        comment.setProject(project2);
-
-        assertEquals(project2, comment.getProject());
     }
 
     @Test
@@ -81,17 +74,24 @@ public class CommentTest {
     @Test
     void testConstructFromDTO() {
         PROJECT.setId(1L);
-        CommentDTO dto = new CommentDTO(comment);
 
-        Comment commentTest = new Comment(dto, PROJECT);
+        CommentDTO dto = new CommentDTO();
+        dto.setId(1L);
+        dto.setNick("nick");
+        dto.setMessage("message");
+        dto.setProject_id(1L);
+        dto.setUp(10);
+        dto.setDown(10);
+
+        comment = new Comment(dto, PROJECT);
 
         assertAll(
-                () -> assertEquals(comment.getId(), commentTest.getId()),
-                () -> assertEquals(comment.getNick(), commentTest.getNick()),
-                () -> assertEquals(comment.getMessage(), commentTest.getMessage()),
-                () -> assertEquals(comment.getProject(), commentTest.getProject()),
-                () -> assertEquals(comment.getUp(), commentTest.getUp()),
-                () -> assertEquals(comment.getDown(), commentTest.getDown())
+                () -> assertEquals(dto.getId(), comment.getId()),
+                () -> assertEquals(dto.getNick(), comment.getNick()),
+                () -> assertEquals(dto.getMessage(), comment.getMessage()),
+                () -> assertEquals(dto.getProject_id(), comment.getProject().getId()),
+                () -> assertEquals(dto.getUp(), comment.getUp()),
+                () -> assertEquals(dto.getDown(), comment.getDown())
         );
     }
 

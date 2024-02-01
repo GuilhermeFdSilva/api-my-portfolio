@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class AdminTest {
@@ -13,35 +13,32 @@ public class AdminTest {
     @BeforeEach
     void setUp() {
         admin = new Admin();
-        admin.setId(1L);
-        admin.setLogin("admin");
-        admin.setPassword("admin123");
     }
 
     @Test
     void testSetAndGetId() {
+        assertNull(admin.getId());
+
+        admin.setId(1L);
+
         assertEquals(1L, admin.getId());
-
-        admin.setId(2L);
-
-        assertEquals(2L, admin.getId());
     }
 
     @Test
     void testSetAndGetLogin() {
-        assertEquals("admin", admin.getLogin());
+        assertNull(admin.getLogin());
 
-        admin.setLogin("admin2");
+        admin.setLogin("login");
 
-        assertEquals("admin2", admin.getLogin());
+        assertEquals("login", admin.getLogin());
     }
 
     @Test
     void testSetAndGetPassword() {
-        assertEquals("admin123", admin.getPassword());
+        assertNull(admin.getPassword());
 
-        admin.setPassword("newPassword");
+        admin.setPassword("password");
 
-        assertEquals("newPassword", admin.getPassword());
+        assertEquals("password", admin.getPassword());
     }
 }
