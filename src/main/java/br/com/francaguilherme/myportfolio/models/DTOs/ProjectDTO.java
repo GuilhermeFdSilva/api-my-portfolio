@@ -98,16 +98,6 @@ public class ProjectDTO {
     }
 
     /**
-     * Função estática para conversão de uma lista de {@link Project} em uma lista de {@link ProjectDTO}.
-     *
-     * @param projects Lista de {@link Project} para conversão.
-     * @return Lista com objetos convertidos para {@link ProjectDTO}.
-     */
-    public static List<ProjectDTO> listToDTO(List<Project> projects) {
-        return projects.stream().map(ProjectDTO::new).toList();
-    }
-
-    /**
      * Função estática para conversão de um objeto {@link Project} em um objeto {@link ProjectDTO}.
      *
      * @param project {@link Project} a ser convertido.
@@ -115,5 +105,15 @@ public class ProjectDTO {
      */
     public static ProjectDTO toDTO(Project project) {
         return new ProjectDTO(project);
+    }
+
+    /**
+     * Função estática para conversão de uma lista de {@link Project} em uma lista de {@link ProjectDTO}.
+     *
+     * @param projects Lista de {@link Project} para conversão.
+     * @return Lista com objetos convertidos para {@link ProjectDTO}.
+     */
+    public static List<ProjectDTO> listToDTO(List<Project> projects) {
+        return projects.stream().map(ProjectDTO::new).toList();
     }
 }

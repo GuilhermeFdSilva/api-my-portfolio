@@ -75,16 +75,6 @@ public class CommentDTO {
     }
 
     /**
-     * Função estática para conversão de uma lista de {@link Comment} em uma lista de {@link CommentDTO}.
-     *
-     * @param comments Lista de {@link Comment} para conversão.
-     * @return Lista com objetos convertidos para {@link CommentDTO}.
-     */
-    public static List<CommentDTO> listToDTO(List<Comment> comments) {
-        return comments.stream().map(CommentDTO::new).toList();
-    }
-
-    /**
      * Função estática para conversão de um objeto {@link Comment} em um objeto {@link CommentDTO}.
      *
      * @param comment {@link Comment} a ser convertido.
@@ -92,5 +82,15 @@ public class CommentDTO {
      */
     public static CommentDTO toDTO(Comment comment) {
         return new CommentDTO(comment);
+    }
+
+    /**
+     * Função estática para conversão de uma lista de {@link Comment} em uma lista de {@link CommentDTO}.
+     *
+     * @param comments Lista de {@link Comment} para conversão.
+     * @return Lista com objetos convertidos para {@link CommentDTO}.
+     */
+    public static List<CommentDTO> listToDTO(List<Comment> comments) {
+        return comments.stream().map(CommentDTO::new).toList();
     }
 }
