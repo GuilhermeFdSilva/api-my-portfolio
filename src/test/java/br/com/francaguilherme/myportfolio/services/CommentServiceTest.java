@@ -144,17 +144,36 @@ public class CommentServiceTest {
         assertThrows(EntityNotFoundException.class, () -> service.updateComment(entryDTO));
     }
 
-//    @Test
-//    void testVoteComment() {
-//        CommentDTO entryDTO = CommentDTO.toDTO(COMMENT);
-//        List<String> types = new ArrayList<>(List.of("up", "down", "remove-up", "remove-down"));
-//
-//        when(repository.findById(COMMENT.getId())).thenReturn(Optional.of(COMMENT));
-//
-//        for (int i = 0; i < types.size(); i++) {
-//            service.voteComment(entryDTO, types.get(i));
-//        }
-//
-//        verify();
-//    }
+    @Test
+    void testVoteComment() {
+        CommentDTO entryDTO = CommentDTO.toDTO(COMMENT);
+
+        when(repository.findById(entryDTO.getId())).thenReturn(Optional.of(COMMENT));
+        when(repository.save(COMMENT)).thenReturn(COMMENT);
+
+        assertAll(
+                () -> assertEquals(1, service.voteComment(entryDTO, "up").getUp()),
+                () -> assertEquals(1, service.voteComment(entryDTO, "down").getDown()),
+                () -> assertEquals(0, service.voteComment(entryDTO, "remove-up").getUp()),
+                () -> assertEquals(0, service.voteComment(entryDTO, "remove-down").getDown())
+        );
+    }
+
+    @Test
+    void testDeleteComment() {
+        when(repository.existsById(1L)).thenReturn(true);
+
+        service.deleteComment(1L);
+
+        verify(repository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void testDeleteCommentInvalid() {
+        when(repository.existsById(2L)).thenReturn(false);
+
+        assertThrows(EntityNotFoundException.class, () -> service.deleteComment(2L));
+
+        verify(repository, never()).deleteById(2L);
+    }
 }
