@@ -55,7 +55,7 @@ public class ExceptionHandlers {
      */
     @ExceptionHandler(EmptyListException.class)
     public ResponseEntity<String> handlerEmptyList(EmptyListException exception) {
-        return new ResponseEntity<>("Lista de comentários vazia ou nula", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Lista de objetos vazia", HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -76,7 +76,7 @@ public class ExceptionHandlers {
      * @return {@link ResponseEntity} com a mensagem de erro adequada.
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> handlerArgumentNotValid(ConstraintViolationException exception) {
+    public ResponseEntity<String> handlerInvalidArgument(ConstraintViolationException exception) {
         Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
         StringBuilder response = new StringBuilder();
 
