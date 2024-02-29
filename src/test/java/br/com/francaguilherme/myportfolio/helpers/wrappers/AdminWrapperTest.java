@@ -41,4 +41,12 @@ public class AdminWrapperTest {
 
         assertEquals(comment, wrapper.getType());
     }
+
+    @Test
+    void testNoArgsConstructor() {
+        AdminWrapper<Comment> commentAdminWrapper = new AdminWrapper<>();
+
+        assertNull(commentAdminWrapper.getAdmin());
+        assertNull(commentAdminWrapper.getType());
+    }
 }
